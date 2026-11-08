@@ -1,14 +1,10 @@
 /* =========================================================================
-   Welcome intro — the five looks are thrown up, then LORD KNOWS slaps on
-   letter by letter. Styled to the runway: white, Helvetica, square buttons.
+   Welcome intro — "Armour of God"
+   The fallen angel tumbles out of the sky and crashes, the angel dives down
+   and lands on him, then LORDKNOWS slaps on letter by letter behind them.
+   The ribbon unfurls, flowers bloom, stars twinkle, the verse writes itself.
+   Every layer lands exactly where it sits in the artwork.
    ========================================================================= */
-
-/* Collegiate lettering, like the LORD KNOWS chest print */
-@font-face {
-  font-family: Graduate;
-  src: url(assets/fonts/graduate-400.woff2) format("woff2");
-  font-weight: 400; font-style: normal; font-display: block;
-}
 
 .intro { display: none; }
 .js .intro {
@@ -16,143 +12,156 @@
   z-index: 200;
   display: block;
   overflow: hidden;
-  background: #0e0e0e;
+  background: #fff;
   color: #151413;
   font-family: Helvetica, Arial, sans-serif;
   cursor: pointer;
   transition: transform .9s cubic-bezier(.76, 0, .24, 1);
 }
 .intro-open, .intro-open body { overflow: hidden; }
-.intro-kicker {
+.intro.is-leaving { transform: translateY(-100%); }
+
+.intro-stage {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+}
+/* The artwork box: 2080 × 2800, as big as the screen allows */
+.intro-art {
+  position: relative;
+  height: min(96svh, calc(96vw * 2800 / 2080));
+  aspect-ratio: 2080 / 2800;
+}
+.ia {
+  position: absolute;
+  display: block;
+  max-width: none;
+  opacity: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+.ia--letter  { z-index: 1; }
+.ia--fallen  { z-index: 2; }
+.ia--angel   { z-index: 3; }
+.ia--ribbon  { z-index: 4; }
+.ia--flowers { z-index: 5; transform-origin: 50% 85%; }
+.ia--star    { z-index: 5; }
+.ia--verse   { z-index: 5; }
+
+/* Impact dust under each landing */
+.ia-dust {
+  position: absolute; z-index: 6;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(140, 118, 92, .45), rgba(140, 118, 92, .18) 55%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.ia-dust--bad  { left: 6%;  top: 84%; width: 82%; height: 12%; }
+.ia-dust--good { left: 34%; top: 66%; width: 46%; height: 9%; }
+
+.intro-kicker, .intro-skip {
+  position: absolute; z-index: 2;
   margin: 0;
   font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
   color: #66625c;
+  opacity: 0;
 }
-.intro.is-leaving { transform: translateY(-100%); }
+.intro-kicker { top: 24px; left: 32px; }
+.intro-skip   { bottom: 24px; right: 32px; }
 
-/* ---- Stage: wallpaper + the slapped word ---- */
-.intro-stage { position: absolute; inset: 0; }
-.intro-wall {
-  position: absolute; inset: 0;
-  z-index: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: 50% 30%;
-  opacity: 0;
-}
-.intro-scrim {
-  position: absolute; inset: 0;
-  z-index: 1;
-  background: linear-gradient(to bottom, rgba(14,14,14,.25), rgba(14,14,14,.55) 50%, rgba(14,14,14,.35));
-  opacity: 0;
-}
-.intro-center {
-  position: absolute; inset: 0;
-  z-index: 2;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 22px;
-  padding: 24px;
-  text-align: center;
-}
-.intro-word {
-  display: flex;
-  margin: 0;
-  padding-top: .3em; /* room for the arch */
-  font-family: Graduate, "Rockwell", "Courier New", serif;
-  font-size: clamp(46px, 11.2vw, 184px);
-  font-weight: 400;
-  line-height: .9;
-  letter-spacing: .01em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: #e3262f;
-  /* varsity print: red fill, white keyline, hard black drop */
-  -webkit-text-stroke: .075em #fff;
-  paint-order: stroke fill;
-  text-shadow: .04em .05em 0 #0e0e0e, .04em .05em .25em rgba(0,0,0,.35);
-}
-.intro-word span {
-  display: inline-block;
-  opacity: 0;
-  translate: 0 var(--y, 0);
-  rotate: var(--a, 0deg);
-}
-.intro-word .gap { width: .32em; }
-.intro-est {
-  margin: -.2em 0 0;
-  font-family: Graduate, "Rockwell", serif;
-  font-size: clamp(13px, 1.5vw, 22px);
-  letter-spacing: .42em;
-  padding-left: .42em;
-  color: #fff;
-  text-shadow: .08em .1em 0 #0e0e0e;
-  opacity: 0;
-}
-.intro-welcome {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  opacity: 0; transform: translateY(12px);
-}
-.intro-welcome p { margin: 0; font-size: 15px; line-height: 1.55; color: #fff; }
-.intro-welcome .intro-kicker { color: rgba(255,255,255,.8); }
-.intro-welcome p span { color: #66625c; }
-.intro-skip {
-  position: absolute; left: 0; right: 0; bottom: 22px;
-  z-index: 2;
-  font-size: 10px; letter-spacing: .16em; text-transform: uppercase; text-align: center;
-  color: rgba(255,255,255,.8);
-  opacity: 0;
-}
+/* ---- The sequence (plays once .is-playing is set) ---- */
 
-/* ---- The sequence ---- */
-.is-playing .intro-wall {
-  animation: intro-throw 1.25s cubic-bezier(.33, 1, .68, 1) both,
-             intro-pan 3.4s 1.1s ease-in-out forwards;
-}
-.is-playing .intro-scrim { animation: intro-fade .45s 1.3s forwards; }
-.is-playing .intro-word span {
-  animation: slap .42s cubic-bezier(.2, 1.4, .4, 1) forwards;
-  animation-delay: calc(1.55s + var(--i, 0) * .13s);
-}
-.is-playing .intro-est {
-  animation: slap .42s cubic-bezier(.2, 1.4, .4, 1) forwards;
-  animation-delay: 2.9s;
-}
-.is-playing .intro-welcome { animation: intro-rise .6s 3.4s cubic-bezier(.2, .7, .2, 1) forwards; }
-.is-playing .intro-skip { animation: intro-fade .6s 1.6s forwards; }
-
-/* The wallpaper is thrown up onto the screen and lands with a bounce */
-@keyframes intro-throw {
-  0%   { opacity: 0; transform: translateY(110vh) rotate(-18deg) scale(.55); }
-  15%  { opacity: 1; }
-  70%  { opacity: 1; transform: translateY(-3%) rotate(2deg) scale(1.03); }
+/* The fallen angel: tumbles head over heels and crashes first */
+.is-playing .ia--fallen { animation: ia-fall-bad 1.15s .15s both; }
+@keyframes ia-fall-bad {
+  0%   { opacity: 1; transform: translate(-6%, -190%) rotate(-210deg) scale(.8); animation-timing-function: cubic-bezier(.5, 0, .9, .55); }
+  80%  { opacity: 1; transform: translate(0, 0) rotate(4deg) scale(1.02, .96); animation-timing-function: ease-out; }
+  90%  { opacity: 1; transform: translate(0, -2.5%) rotate(-1deg); animation-timing-function: ease-in; }
   100% { opacity: 1; transform: none; }
 }
-@keyframes slap {
-  0%   { opacity: 0; transform: scale(3.2) rotate(calc(var(--r, 0) * 1deg)); filter: blur(6px); }
-  60%  { opacity: 1; transform: scale(.92) rotate(calc(var(--r, 0) * -.2deg)); filter: none; }
+
+/* The angel: dives out of the sky, sways, and lands on him */
+.is-playing .ia--angel { animation: ia-fall-good 1.45s .6s both; }
+@keyframes ia-fall-good {
+  0%   { opacity: 1; transform: translate(8%, -135%) rotate(16deg) scale(.86); animation-timing-function: cubic-bezier(.45, 0, .8, .4); }
+  55%  { opacity: 1; transform: translate(-1.5%, -22%) rotate(-5deg) scale(.97); animation-timing-function: cubic-bezier(.3, .2, .9, .6); }
+  82%  { opacity: 1; transform: translate(0, 0) rotate(0) scale(1.015, .985); animation-timing-function: ease-out; }
+  91%  { opacity: 1; transform: translate(0, -1.4%); animation-timing-function: ease-in; }
   100% { opacity: 1; transform: none; }
 }
+
+.is-playing .ia-dust--bad  { animation: ia-dust .9s 1.07s ease-out both; }
+.is-playing .ia-dust--good { animation: ia-dust .8s 1.8s ease-out both; }
+@keyframes ia-dust {
+  0%   { opacity: 0; transform: scale(.3, .2); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25, 1); }
+}
+
+/* LORDKNOWS slaps on, letter by letter */
+.is-playing .ia--letter {
+  animation: ia-slap .42s cubic-bezier(.2, 1.4, .4, 1) both;
+  animation-delay: calc(2s + var(--i, 0) * .12s);
+}
+@keyframes ia-slap {
+  0%   { opacity: 0; transform: scale(3.2) rotate(-8deg); filter: blur(6px); }
+  60%  { opacity: 1; transform: scale(.92) rotate(1deg); filter: none; }
+  100% { opacity: 1; transform: none; }
+}
+
+/* "When the devil strikes" unfurls down from the top */
+.is-playing .ia--ribbon { animation: ia-unfurl .8s 3.15s cubic-bezier(.6, 0, .3, 1) both; }
+@keyframes ia-unfurl {
+  0%   { opacity: 1; clip-path: inset(0 0 100% 0); }
+  100% { opacity: 1; clip-path: inset(0); }
+}
+
+/* Flowers bloom up from their stems */
+.is-playing .ia--flowers { animation: ia-bloom .7s 3.3s cubic-bezier(.2, 1.5, .4, 1) both; }
+@keyframes ia-bloom {
+  0%   { opacity: 0; transform: scale(.4) rotate(-6deg); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* Stars spin in, then keep twinkling */
+.is-playing .ia--star {
+  animation: ia-star .6s cubic-bezier(.2, 1.6, .4, 1) both, ia-twinkle 2.4s ease-in-out infinite;
+  animation-delay: calc(3.5s + var(--s, 0) * .18s), calc(4.2s + var(--s, 0) * .9s);
+}
+@keyframes ia-star {
+  0%   { opacity: 0; transform: scale(0) rotate(-120deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes ia-twinkle {
+  0%, 100% { opacity: 1; transform: none; }
+  50%      { opacity: .55; transform: scale(.82); }
+}
+
+/* The verse writes itself in, line by line */
+.is-playing .ia--verse {
+  animation: ia-write .75s cubic-bezier(.5, 0, .3, 1) both;
+  animation-delay: calc(3.7s + var(--v, 0) * .45s);
+}
+@keyframes ia-write {
+  0%   { opacity: 1; clip-path: inset(0 100% 0 0); }
+  100% { opacity: 1; clip-path: inset(0); }
+}
+
+.is-playing .intro-kicker,
+.is-playing .intro-skip { animation: intro-fade .6s 2s forwards; }
 @keyframes intro-fade { to { opacity: 1; } }
-/* Wide screens crop the portrait photo, so it pans from the faces down to the logos */
-@keyframes intro-pan { to { object-position: 50% 45%; } }
-@keyframes intro-rise { to { opacity: 1; transform: none; } }
 
-/* Tall screens: LORD over KNOWS so the word can be bigger */
-@media (max-aspect-ratio: 3 / 4) {
-  .intro-word { flex-wrap: wrap; justify-content: center; font-size: 17vw; line-height: 1.05; padding-top: .2em; }
-  .intro-word .gap { flex-basis: 100%; height: 0; }
-  .intro-est { font-size: 13px; margin-top: .4em; }
-  .intro-welcome p { font-size: 14px; }
-  .intro-welcome p span { display: block; }
+/* Phones: the art fills the width, the captions sit in the space above and below */
+@media (max-width: 749px) {
+  .intro-kicker { left: 0; right: 0; top: 20px; text-align: center; }
+  .intro-skip   { left: 0; right: 0; bottom: 20px; text-align: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .js .intro { transition: opacity .3s ease; }
   .intro.is-leaving { transform: none; opacity: 0; }
-  .is-playing .intro-wall,
-  .is-playing .intro-scrim,
-  .is-playing .intro-word span,
-  .is-playing .intro-est,
-  .is-playing .intro-welcome,
-  .is-playing .intro-skip { animation: none; opacity: 1; transform: none; filter: none; }
+  .is-playing .ia,
+  .is-playing .intro-kicker,
+  .is-playing .intro-skip { animation: none; opacity: 1; transform: none; filter: none; clip-path: none; }
+  .is-playing .ia-dust { animation: none; }
 }

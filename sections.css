@@ -1,0 +1,210 @@
+/* =========================================================================
+   Lord Knows — sections below the runway
+   The Collection · Armour of God · Lookbook · Girls' Club · Community · Footer
+   Same language as the runway: white, Helvetica, #151413 / #66625c,
+   10px uppercase labels, square black buttons, round size pills.
+   ========================================================================= */
+
+.lk-sec {
+  --ink: #151413; --muted: #66625c; --line: #e4e4e4; --btn: #0e0e0e;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 104px 40px 0;
+  color: var(--ink);
+  font-family: Helvetica, Arial, sans-serif;
+  scroll-margin-top: 16px;
+}
+.lk-sec figure { margin: 0; }
+.lk-sec img { display: block; width: 100%; height: auto; }
+
+.lk-head { display: flex; flex-direction: column; gap: 12px; max-width: 640px; margin-bottom: 40px; }
+.lk-head--row { max-width: none; flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.lk-head--row > div { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
+.lk-kicker { margin: 0; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.lk-title { margin: 0; font-size: 46px; font-weight: 400; line-height: 1; letter-spacing: -.02em; }
+.lk-sub { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 52ch; }
+
+.lk-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 46px; padding: 0 28px;
+  border: 0; border-radius: 0;
+  background: var(--btn, #0e0e0e); color: #fff;
+  font: 500 13px/1 Helvetica, Arial, sans-serif;
+  text-decoration: none; white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.lk-btn:hover { background: #333; }
+.lk-btn:disabled { background: #c8c8c8; cursor: default; }
+.lk-btn:focus-visible, .lk-filter:focus-visible, .lk-pill:focus-visible, .lk-look-btn:focus-visible { outline: 2px solid #151413; outline-offset: 3px; }
+
+/* ---------------- The Collection ---------------- */
+.lk-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: -12px 0 28px; }
+.lk-filter {
+  height: 34px; padding: 0 16px;
+  border: 1px solid var(--line); border-radius: 30px;
+  background: #fff; color: var(--ink);
+  font: 12px Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  transition: border-color .2s, background .2s, color .2s;
+}
+.lk-filter:hover { border-color: var(--ink); }
+.lk-filter[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.lk-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 20px; }
+.lk-card { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.lk-card[hidden] { display: none; }
+.lk-card.is-flash .lk-card-media { outline: 2px solid var(--ink); outline-offset: 4px; }
+.lk-card-media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--bg, #f4f4f4);
+  transition: outline-color .3s;
+}
+.lk-card-media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: var(--fit, cover);
+  object-position: 50% 30%;
+  transition: opacity .45s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+.lk-card-media img + img { opacity: 0; }
+@media (hover: hover) {
+  .lk-card:hover .lk-card-media img:first-child:not(:only-child) { opacity: 0; }
+  .lk-card:hover .lk-card-media img + img { opacity: 1; }
+  .lk-card:hover .lk-card-media img { transform: scale(1.03); }
+}
+.lk-card-tag {
+  position: absolute; left: 10px; top: 10px; z-index: 1;
+  padding: 5px 8px;
+  background: #fff; color: var(--ink);
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+}
+.lk-card-meta { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.lk-card-name { margin: 0; font-size: 13px; font-weight: 500; line-height: 1.3; }
+.lk-card-price { font-size: 13px; }
+.lk-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.lk-pill {
+  min-width: 38px; height: 30px; padding: 0 10px;
+  border: 1px solid var(--line); border-radius: 30px;
+  background: #fff; color: var(--ink);
+  font: 11px Helvetica, Arial, sans-serif;
+  cursor: pointer;
+}
+.lk-pill:hover { border-color: var(--ink); }
+.lk-pill[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
+.lk-card .lk-btn { width: 100%; }
+.lk-card .lk-btn.is-added { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+
+/* ---------------- Armour of God ---------------- */
+.lk-story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+.lk-story-art { background: #f4f4f4; }
+.lk-story-art img { aspect-ratio: 1376 / 1912; object-fit: cover; }
+.lk-story-text { display: flex; flex-direction: column; gap: 18px; max-width: 520px; }
+.lk-verse {
+  margin: 6px 0;
+  padding-left: 18px;
+  border-left: 2px solid #e8a93c;
+  font-size: 22px; line-height: 1.35; letter-spacing: -.01em;
+}
+.lk-story-text em { font-style: italic; color: var(--ink); }
+.lk-story-shirt { display: flex; align-items: center; gap: 20px; margin-top: 14px; padding-top: 24px; border-top: 1px solid var(--line); }
+.lk-story-shirt img { width: 150px; flex: none; aspect-ratio: 4 / 5; object-fit: cover; }
+.lk-story-name { margin: 0 0 4px; font-size: 13px; font-weight: 500; }
+.lk-story-meta { margin: 0 0 16px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------------- Lookbook ---------------- */
+.lk-looks { columns: 3; column-gap: 16px; }
+.lk-look { break-inside: avoid; margin-bottom: 16px !important; }
+.lk-look-btn { display: block; width: 100%; padding: 0; border: 0; background: #f4f4f4; cursor: zoom-in; overflow: hidden; }
+.lk-look-btn img { transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
+.lk-look-btn:hover img { transform: scale(1.03); }
+.lk-look figcaption, .lk-club-fig figcaption {
+  padding-top: 10px;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+
+/* ---------------- Girls' Club ---------------- */
+.lk-club-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.lk-club-fig img { aspect-ratio: 4 / 5; object-fit: cover; background: #e9ebf1; }
+.lk-club-fig:nth-child(odd) img { object-position: 50% 20%; }
+
+/* ---------------- Community ---------------- */
+.lk-comm { display: grid; grid-template-columns: 3fr 2fr; grid-template-rows: 1fr 1fr; gap: 16px; }
+.lk-comm-a { grid-row: span 2; }
+.lk-comm figure { overflow: hidden; background: #f4f4f4; }
+.lk-comm img { width: 100%; height: 100%; object-fit: cover; }
+.lk-comm-a img { aspect-ratio: 1290 / 1154; }
+
+/* ---------------- Footer ---------------- */
+.lk-foot {
+  max-width: 1440px;
+  margin: 120px auto 0;
+  padding: 40px 40px 48px;
+  border-top: 1px solid #e4e4e4;
+  color: #151413;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.lk-foot-top { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.lk-foot nav { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 13px; }
+.lk-foot nav a { color: inherit; text-decoration: none; }
+.lk-foot nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.lk-foot-note { margin: 28px 0 0; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #66625c; }
+
+/* ---------------- Zoom ---------------- */
+.lk-zoom {
+  width: min(92vw, 1100px); max-height: 92vh;
+  padding: 0; border: 0;
+  background: transparent;
+  overflow: visible;
+}
+.lk-zoom::backdrop { background: rgba(255, 255, 255, .94); }
+.lk-zoom img { display: block; max-width: 100%; max-height: 92vh; margin: 0 auto; object-fit: contain; }
+.lk-zoom-close {
+  position: fixed; top: 18px; right: 22px;
+  width: 44px; height: 44px;
+  border: 0; background: #0e0e0e; color: #fff;
+  font-size: 22px; line-height: 1; cursor: pointer;
+}
+
+/* Fade sections up as they arrive */
+.lk-reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
+.lk-reveal.is-in { opacity: 1; transform: none; }
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 1099px) {
+  .lk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lk-story { grid-template-columns: 1fr; gap: 40px; }
+  .lk-story-art { max-width: 560px; }
+  .lk-club-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1099px) and (min-width: 750px) {
+  .site-header .lk-nav-wide { display: none; }
+}
+@media (max-width: 749px) {
+  .site-header .lk-nav-wide { display: none; }
+  .lk-sec { padding: 72px 16px 0; }
+  .lk-title { font-size: 34px; }
+  .lk-head { margin-bottom: 28px; }
+  .lk-head--row { flex-direction: column; align-items: flex-start; }
+  .lk-filters { flex-wrap: nowrap; overflow-x: auto; margin: -8px -16px 22px; padding: 0 16px; scrollbar-width: none; }
+  .lk-filters::-webkit-scrollbar { display: none; }
+  .lk-filter { flex: none; }
+  .lk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 12px; }
+  .lk-pill { min-width: 32px; height: 28px; padding: 0 8px; }
+  .lk-card .lk-btn { height: 42px; padding: 0 10px; font-size: 12px; }
+  .lk-verse { font-size: 18px; }
+  .lk-story-shirt img { width: 110px; }
+  .lk-looks { columns: 2; column-gap: 10px; }
+  .lk-look { margin-bottom: 10px !important; }
+  .lk-club-row { gap: 10px; }
+  .lk-comm { grid-template-columns: 1fr; grid-template-rows: auto; gap: 10px; }
+  .lk-comm-a { grid-row: auto; }
+  .lk-comm-b img, .lk-comm-c img { aspect-ratio: 1290 / 1000; }
+  .lk-foot { margin-top: 88px; padding: 32px 16px 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lk-reveal { opacity: 1; transform: none; transition: none; }
+  .lk-card-media img, .lk-look-btn img { transition: none; }
+}

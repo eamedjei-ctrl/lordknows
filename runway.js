@@ -15,14 +15,33 @@
   const ONE_SIZE = ['One size'];
   const IMG = 'assets/images/';
 
+  // gallery: photos shown in The Collection (first = main, second = hover view).
+  const W = (name) => `${IMG}web/${name}-720.webp`;
   const PRODUCTS = {
-    'college-tee-black': { name: 'College Tee', meta: 'Black · Est. MMXXIII', img: IMG + 'runway/college-tee-black.webp', w: 480, h: 600, sizes: APPAREL, price: null },
-    'college-tee-white': { name: 'College Tee', meta: 'Cream · Est. MMXXIII', img: IMG + 'runway/college-tee-white.webp', w: 480, h: 600, sizes: APPAREL, price: null },
-    'lord-knows-joggers': { name: 'Lord Knows Joggers', meta: 'Black · Red logo', img: IMG + 'cutouts/lord-knows-joggers.webp', w: 314, h: 601, cutout: true, sizes: APPAREL, price: null },
-    'salvation-joggers': { name: 'Salvation Joggers', meta: 'Black · Leg print', img: IMG + 'cutouts/salvation-joggers.webp', w: 287, h: 595, cutout: true, sizes: APPAREL, price: null },
-    'classic-trucker': { name: 'Classic Trucker Cap', meta: 'Black / white', img: IMG + 'cutouts/classic-trucker.webp', w: 533, h: 500, cutout: true, sizes: ONE_SIZE, price: null },
-    'club-trucker': { name: 'Girls’ Club Trucker', meta: 'Green / white', img: IMG + 'cutouts/club-trucker.webp', w: 716, h: 493, cutout: true, sizes: ONE_SIZE, price: null },
-    'red-trucker': { name: 'Red Trucker Cap', meta: 'Red / black', img: IMG + 'red-trucker-cap-detail.jpeg', w: 1290, h: 1592, sizes: ONE_SIZE, price: null },
+    // ---- in the runway looks
+    'college-tee-black': { name: 'College Tee', meta: 'Black · Est. MMXXIII', img: IMG + 'runway/college-tee-black.webp', w: 480, h: 600, sizes: APPAREL, price: null, gallery: ['tracksuit-stadium', 'black-set'], line: 'stadium' },
+    'college-tee-white': { name: 'College Tee', meta: 'Cream · Est. MMXXIII', img: IMG + 'runway/college-tee-white.webp', w: 480, h: 600, sizes: APPAREL, price: null, gallery: ['college-tee', 'stadium-friends'], line: 'stadium' },
+    'lord-knows-joggers': { name: 'Lord Knows Joggers', meta: 'Black · Red logo', img: IMG + 'cutouts/lord-knows-joggers.webp', w: 314, h: 601, cutout: true, sizes: APPAREL, price: null, gallery: ['black-set', 'stadium-trio'], line: 'stadium' },
+    'salvation-joggers': { name: 'Salvation Joggers', meta: 'Black · Leg print', img: IMG + 'cutouts/salvation-joggers.webp', w: 287, h: 595, cutout: true, sizes: APPAREL, price: null, gallery: ['set-front-back'], line: 'stadium' },
+    'classic-trucker': { name: 'Classic Trucker Cap', meta: 'Black / white · Limited edition', img: IMG + 'cutouts/classic-trucker.webp', w: 533, h: 500, cutout: true, sizes: ONE_SIZE, price: null, gallery: ['classic-trucker-cap', 'popup-display'], line: 'caps' },
+    'club-trucker': { name: 'Girls’ Club Trucker', meta: 'Green / white', img: IMG + 'cutouts/club-trucker.webp', w: 716, h: 493, cutout: true, sizes: ONE_SIZE, price: null, gallery: ['girls-club-trucker', 'girls-club-set'], line: 'club' },
+    'red-trucker': { name: 'Red Trucker Cap', meta: 'Red / black', img: W('red-trucker-cap-detail'), w: 720, h: 889, sizes: ONE_SIZE, price: null, gallery: ['red-trucker-cap-model', 'red-trucker-cap-detail'], line: 'caps' },
+    // ---- graphic shirts & tees
+    'armour-shirt': { name: 'Armour of God Shirt', meta: 'White · Back print', img: W('armour-of-god-shirt'), w: 720, h: 894, sizes: APPAREL, price: null, gallery: ['armour-of-god-shirt', 'armour-of-god-artwork-hd'], line: 'graphic' },
+    'fallen-shirt-black': { name: 'Fallen Angel Shirt', meta: 'Black · Front & back', img: W('fallen-angel-shirt-black-back'), w: 720, h: 732, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-black-back', 'fallen-angel-shirt-black'], line: 'graphic' },
+    'fallen-longsleeve': { name: 'Fallen Angel Long Sleeve', meta: 'White · Back print', img: W('fallen-angel-shirt-white-long-sleeve'), w: 720, h: 740, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-white-long-sleeve'], line: 'graphic' },
+    'fallen-tee': { name: 'Fallen Angel Tee', meta: 'White · Back print', img: W('fallen-angel-tee'), w: 720, h: 720, sizes: APPAREL, price: null, gallery: ['fallen-angel-tee'], line: 'graphic' },
+    'messiah-tee': { name: 'Heart of the Messiah Tee', meta: 'White · Our Father print', img: W('heart-of-the-messiah-tee'), w: 720, h: 788, sizes: APPAREL, price: null, gallery: ['heart-of-the-messiah-tee'], line: 'graphic' },
+    'gothic-tee-black': { name: 'Gothic Logo Tee', meta: 'Black · Cross graphic', img: W('cross-graphic-tee-black'), w: 720, h: 587, sizes: APPAREL, price: null, gallery: ['cross-graphic-tee-black'], line: 'graphic' },
+    'gothic-tee-white': { name: 'Gothic Logo Tee', meta: 'White · Cross graphic', img: W('cross-graphic-tee-white'), w: 720, h: 591, sizes: APPAREL, price: null, gallery: ['cross-graphic-tee-white'], line: 'graphic' },
+    // ---- shirts
+    'feather-shirt-black': { name: 'Feather Shirt', meta: 'Black · Gold feathers', img: W('feather-button-shirt'), w: 720, h: 718, sizes: APPAREL, price: null, gallery: ['feather-button-shirt'], line: 'shirts' },
+    'feather-shirt-white': { name: 'Feather Shirt', meta: 'White · Gold feathers', img: W('feather-shirt-detail'), w: 720, h: 736, sizes: APPAREL, price: null, gallery: ['feather-shirt-detail'], line: 'shirts' },
+    'signature-shirt': { name: 'Signature Shirt', meta: 'White · Script logo', img: W('signature-shirt'), w: 720, h: 705, sizes: APPAREL, price: null, gallery: ['signature-shirt'], line: 'shirts' },
+    // ---- girls' club
+    'club-tee-green': { name: 'Girls’ Club Ringer Tee', meta: 'White / green', img: W('girls-club-set'), w: 720, h: 858, sizes: APPAREL, price: null, gallery: ['girls-club-set', 'girls-club-trucker'], line: 'club' },
+    'club-tee-pink': { name: 'Girls’ Club Ringer Tee', meta: 'White / pink', img: W('girls-club-tee'), w: 720, h: 813, sizes: APPAREL, price: null, gallery: ['girls-club-tee'], line: 'club' },
+    'raglan-crop': { name: 'Raglan Crop Tee', meta: 'White / black', img: W('raglan-tee'), w: 720, h: 898, sizes: APPAREL, price: null, gallery: ['raglan-tee'], line: 'club' },
   };
 
   // pin: [left %, top %] of the figure box, where the piece sits on the model.
@@ -1085,5 +1104,7 @@
   Bag.load();
   BagDialog.init();
   Bag.changed(false);
+  // Shared with shop.js (The Collection)
+  window.LordKnows = { PRODUCTS, Bag, money, hasPrice, BagDialog };
   if (!customElements.get('runway-section')) customElements.define('runway-section', RunwaySection);
 })();

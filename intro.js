@@ -1,11 +1,11 @@
-// Welcome intro: plays on load — the stadium wallpaper are thrown up onto the stage,
-// then LORD KNOWS slaps on letter by letter — each letter with a slam and a jolt.
+// Welcome intro: the fallen angel tumbles out of the sky and crashes, the angel
+// dives down and lands on him, then LORDKNOWS slaps on letter by letter —
+// each letter with a slam and a jolt. Plays on load; tap or any key skips.
 (() => {
   const intro = document.querySelector('.intro');
   if (!intro) return;
   const stage = intro.querySelector('.intro-stage');
-  const word = intro.querySelector('.intro-word');
-  const models = [...intro.querySelectorAll('.intro-wall')];
+  const models = [...intro.querySelectorAll('.ia')];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---- Sound: synthesised with Web Audio, no files. Needs the first tap. ----
@@ -58,11 +58,19 @@
     }
     return {
       unlock: init,
-      play(landAt, slamTimes) {
+      play(falls, slamTimes, chimeAt) {
         if (!ctx) return;
         const t0 = ctx.currentTime + 0.02;
-        whoosh(t0, landAt);
-        boom(t0 + landAt, 110, 30, 1.1, 1.1); noise(t0 + landAt, 0.4, 'lowpass', 700, 0.5);
+        falls.forEach(([from, land]) => {
+          whoosh(t0 + from, land - from);
+          boom(t0 + land, 110, 30, 1.1, 1.1); noise(t0 + land, 0.4, 'lowpass', 700, 0.5);
+        });
+        [0, 0.09, 0.18].forEach((d, i) => {          // little shimmer as the stars appear
+          const o = ctx.createOscillator(); o.type = 'sine';
+          o.frequency.value = [1568, 2093, 2637][i];
+          o.connect(env(t0 + chimeAt + d, 0.01, 0.12, 0.9)).connect(out);
+          o.start(t0 + chimeAt + d); o.stop(t0 + chimeAt + d + 1);
+        });
         slamTimes.forEach((s) => {
           const t = t0 + s;
           boom(t, 190, 45, 0.32, 1); noise(t, 0.09, 'highpass', 2000, 0.4); noise(t, 0.18, 'bandpass', 380, 0.35);
@@ -72,40 +80,12 @@
     };
   })();
 
-  // ---- Build the letters ----
-  const TEXT = 'LORD KNOWS';
-  word.innerHTML = [...TEXT].map((ch, i) =>
-    ch === ' ' ? '<span class="gap"></span>' : `<span style="--i:${i};--r:${i % 2 ? 9 : -9}">${ch}</span>`
-  ).join('');
-
-  // Matches the CSS: the wallpaper lands 70% into 1.25s; each letter starts at 1.55s + i × .13s
-  // and hits the screen 60% into its .42s slap.
-  const LAND_AT = 0.875;
-  // Arch the letters like the chest print: each line bows up in the middle,
-  // letters tilt outwards. Uses the individual translate/rotate properties so it
-  // composes with the slap animation's transform.
-  const tall = matchMedia('(max-aspect-ratio: 3 / 4)');
-  function arch() {
-    const lines = tall.matches ? TEXT.split(' ') : [TEXT];
-    const spans = [...word.children];
-    let k = 0;
-    lines.forEach((line, li) => {
-      const n = line.length;
-      const lift = tall.matches ? 0.14 : 0.26;   // em
-      const tilt = tall.matches ? 10 : 13;       // deg at the ends
-      [...line].forEach((ch, i) => {
-        const el = spans[k++];
-        const x = n > 1 ? (i / (n - 1)) * 2 - 1 : 0; // -1 … 1
-        el.style.setProperty('--y', `${(-lift * (1 - x * x)).toFixed(3)}em`);
-        el.style.setProperty('--a', `${(x * tilt).toFixed(2)}deg`);
-      });
-      if (li < lines.length - 1) k++; // skip the gap span between lines
-    });
-  }
-  arch();
-  tall.addEventListener?.('change', arch);
-
-  const SLAM_TIMES = [...TEXT].map((ch, i) => (ch === ' ' ? null : 1.55 + i * 0.13 + 0.25)).filter((t) => t !== null).concat(2.9 + 0.25);
+  // ---- Timings: these match intro.css ----
+  // fallen angel: starts .15s, lands 80% into 1.15s; angel: starts .6s, lands 82% into 1.45s
+  const FALLS = [[0.15, 0.15 + 1.15 * 0.8], [0.6, 0.6 + 1.45 * 0.82]];
+  // letter i starts at 2s + i × .12s and hits 60% into its .42s slap
+  const SLAM_TIMES = Array.from({ length: 9 }, (_, i) => 2 + i * 0.12 + 0.25);
+  const CHIME_AT = 3.5;
 
   function jolt(px, duration) {
     if (reduceMotion) return;
@@ -119,18 +99,18 @@
 
   let playing = false, done = false;
   const timers = [];
-  const HOLD = reduceMotion ? 2200 : 5600; // welcome stays up this long, then the site slides in
+  const HOLD = reduceMotion ? 2600 : 6900; // the finished artwork holds, then the site slides in
 
   function play() {
     if (playing) return;
     playing = true;
     // Sound only plays if the browser allows it without a tap (e.g. a returning visitor)
     const ctx = Sound.unlock();
-    if (ctx && ctx.state === 'running' && !reduceMotion) Sound.play(LAND_AT, SLAM_TIMES);
+    if (ctx && ctx.state === 'running' && !reduceMotion) Sound.play(FALLS, SLAM_TIMES, CHIME_AT);
     intro.classList.add('is-playing');
     if (!reduceMotion) {
-      timers.push(setTimeout(() => jolt(12, 220), LAND_AT * 1000));
-      SLAM_TIMES.forEach((s) => timers.push(setTimeout(() => jolt(7, 150), s * 1000)));
+      FALLS.forEach(([, land], k) => timers.push(setTimeout(() => jolt(k ? 10 : 14, 240), land * 1000)));
+      SLAM_TIMES.forEach((s) => timers.push(setTimeout(() => jolt(5, 140), s * 1000)));
     }
     timers.push(setTimeout(enter, HOLD));
   }
@@ -154,7 +134,7 @@
     setTimeout(remove, 1400);
   }
 
-  // Start as soon as the wallpaper is loaded (or after 2.5s on a slow connection)
+  // Start once every layer is loaded (or after 3s on a slow connection)
   const pending = models.filter((m) => !m.complete);
   if (!pending.length) play();
   else {
@@ -164,7 +144,7 @@
       m.addEventListener('load', ok, { once: true });
       m.addEventListener('error', ok, { once: true });
     });
-    setTimeout(play, 2500);
+    setTimeout(play, 3000);
   }
 
   // Tap, click or any key skips straight to the site
