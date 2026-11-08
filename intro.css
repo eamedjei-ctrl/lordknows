@@ -3,6 +3,13 @@
    letter by letter. Styled to the runway: white, Helvetica, square buttons.
    ========================================================================= */
 
+/* Collegiate lettering, like the LORD KNOWS chest print */
+@font-face {
+  font-family: Graduate;
+  src: url(assets/fonts/graduate-400.woff2) format("woff2");
+  font-weight: 400; font-style: normal; font-display: block;
+}
+
 .intro { display: none; }
 .js .intro {
   position: fixed; inset: 0;
@@ -50,17 +57,37 @@
 .intro-word {
   display: flex;
   margin: 0;
-  font-size: clamp(56px, 15vw, 230px);
-  font-weight: 700;
-  line-height: .85;
-  letter-spacing: -.035em;
+  padding-top: .3em; /* room for the arch */
+  font-family: Graduate, "Rockwell", "Courier New", serif;
+  font-size: clamp(46px, 11.2vw, 184px);
+  font-weight: 400;
+  line-height: .9;
+  letter-spacing: .01em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #fff;
-  text-shadow: 0 2px 30px rgba(0,0,0,.25);
+  color: #e3262f;
+  /* varsity print: red fill, white keyline, hard black drop */
+  -webkit-text-stroke: .075em #fff;
+  paint-order: stroke fill;
+  text-shadow: .04em .05em 0 #0e0e0e, .04em .05em .25em rgba(0,0,0,.35);
 }
-.intro-word span { display: inline-block; opacity: 0; }
-.intro-word .gap { width: .2em; }
+.intro-word span {
+  display: inline-block;
+  opacity: 0;
+  translate: 0 var(--y, 0);
+  rotate: var(--a, 0deg);
+}
+.intro-word .gap { width: .32em; }
+.intro-est {
+  margin: -.2em 0 0;
+  font-family: Graduate, "Rockwell", serif;
+  font-size: clamp(13px, 1.5vw, 22px);
+  letter-spacing: .42em;
+  padding-left: .42em;
+  color: #fff;
+  text-shadow: .08em .1em 0 #0e0e0e;
+  opacity: 0;
+}
 .intro-welcome {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
   opacity: 0; transform: translateY(12px);
@@ -86,7 +113,11 @@
   animation: slap .42s cubic-bezier(.2, 1.4, .4, 1) forwards;
   animation-delay: calc(1.55s + var(--i, 0) * .13s);
 }
-.is-playing .intro-welcome { animation: intro-rise .6s 3.15s cubic-bezier(.2, .7, .2, 1) forwards; }
+.is-playing .intro-est {
+  animation: slap .42s cubic-bezier(.2, 1.4, .4, 1) forwards;
+  animation-delay: 2.9s;
+}
+.is-playing .intro-welcome { animation: intro-rise .6s 3.4s cubic-bezier(.2, .7, .2, 1) forwards; }
 .is-playing .intro-skip { animation: intro-fade .6s 1.6s forwards; }
 
 /* The wallpaper is thrown up onto the screen and lands with a bounce */
@@ -108,8 +139,9 @@
 
 /* Tall screens: LORD over KNOWS so the word can be bigger */
 @media (max-aspect-ratio: 3 / 4) {
-  .intro-word { flex-wrap: wrap; justify-content: center; font-size: 21vw; }
+  .intro-word { flex-wrap: wrap; justify-content: center; font-size: 17vw; line-height: 1.05; padding-top: .2em; }
   .intro-word .gap { flex-basis: 100%; height: 0; }
+  .intro-est { font-size: 13px; margin-top: .4em; }
   .intro-welcome p { font-size: 14px; }
   .intro-welcome p span { display: block; }
 }
@@ -120,6 +152,7 @@
   .is-playing .intro-wall,
   .is-playing .intro-scrim,
   .is-playing .intro-word span,
+  .is-playing .intro-est,
   .is-playing .intro-welcome,
   .is-playing .intro-skip { animation: none; opacity: 1; transform: none; filter: none; }
 }

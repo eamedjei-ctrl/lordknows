@@ -81,7 +81,31 @@
   // Matches the CSS: the wallpaper lands 70% into 1.25s; each letter starts at 1.55s + i × .13s
   // and hits the screen 60% into its .42s slap.
   const LAND_AT = 0.875;
-  const SLAM_TIMES = [...TEXT].map((ch, i) => (ch === ' ' ? null : 1.55 + i * 0.13 + 0.25)).filter((t) => t !== null);
+  // Arch the letters like the chest print: each line bows up in the middle,
+  // letters tilt outwards. Uses the individual translate/rotate properties so it
+  // composes with the slap animation's transform.
+  const tall = matchMedia('(max-aspect-ratio: 3 / 4)');
+  function arch() {
+    const lines = tall.matches ? TEXT.split(' ') : [TEXT];
+    const spans = [...word.children];
+    let k = 0;
+    lines.forEach((line, li) => {
+      const n = line.length;
+      const lift = tall.matches ? 0.14 : 0.26;   // em
+      const tilt = tall.matches ? 10 : 13;       // deg at the ends
+      [...line].forEach((ch, i) => {
+        const el = spans[k++];
+        const x = n > 1 ? (i / (n - 1)) * 2 - 1 : 0; // -1 … 1
+        el.style.setProperty('--y', `${(-lift * (1 - x * x)).toFixed(3)}em`);
+        el.style.setProperty('--a', `${(x * tilt).toFixed(2)}deg`);
+      });
+      if (li < lines.length - 1) k++; // skip the gap span between lines
+    });
+  }
+  arch();
+  tall.addEventListener?.('change', arch);
+
+  const SLAM_TIMES = [...TEXT].map((ch, i) => (ch === ' ' ? null : 1.55 + i * 0.13 + 0.25)).filter((t) => t !== null).concat(2.9 + 0.25);
 
   function jolt(px, duration) {
     if (reduceMotion) return;
