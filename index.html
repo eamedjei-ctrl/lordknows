@@ -6,7 +6,8 @@
   <meta name="theme-color" content="#ffffff">
   <title>Try the Look — Runway</title>
   <meta name="description" content="Five looks, styled head to toe. Explore the runway, isolate a look, and tap a pin to see the piece.">
-  <link rel="preload" as="image" href="assets/images/runway/look-1-640.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/images/intro-wallpaper-1288.webp" imagesrcset="assets/images/intro-wallpaper-900.webp 900w, assets/images/intro-wallpaper-1288.webp 1288w" imagesizes="100vw" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/images/runway/look-1-640.webp">
   <link rel="stylesheet" href="runway.css">
   <link rel="stylesheet" href="intro.css">
   <script>document.documentElement.classList.add('js','intro-open');</script>
@@ -16,13 +17,9 @@
   <!-- Welcome intro -->
   <div class="intro" aria-label="Welcome to Lord Knows">
     <div class="intro-stage">
-      <div class="intro-models" aria-hidden="true">
-        <img src="assets/images/runway/look-2-640.webp" alt="">
-        <img src="assets/images/runway/look-4-640.webp" alt="">
-        <img src="assets/images/runway/look-1-640.webp" alt="">
-        <img src="assets/images/runway/look-3-640.webp" alt="">
-        <img src="assets/images/runway/look-5-640.webp" alt="">
-      </div>
+      <img class="intro-wall" src="assets/images/intro-wallpaper-1288.webp"
+           srcset="assets/images/intro-wallpaper-900.webp 900w, assets/images/intro-wallpaper-1288.webp 1288w"
+           sizes="100vw" alt="" fetchpriority="high">
       <div class="intro-scrim"></div>
       <div class="intro-center">
         <p class="intro-word" aria-label="Lord Knows"></p>

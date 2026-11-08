@@ -1,11 +1,11 @@
-// Welcome intro: plays on load — the five looks are thrown up onto the stage,
+// Welcome intro: plays on load — the stadium wallpaper are thrown up onto the stage,
 // then LORD KNOWS slaps on letter by letter — each letter with a slam and a jolt.
 (() => {
   const intro = document.querySelector('.intro');
   if (!intro) return;
   const stage = intro.querySelector('.intro-stage');
   const word = intro.querySelector('.intro-word');
-  const models = [...intro.querySelectorAll('.intro-models img')];
+  const models = [...intro.querySelectorAll('.intro-wall')];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---- Sound: synthesised with Web Audio, no files. Needs the first tap. ----
@@ -77,9 +77,8 @@
   word.innerHTML = [...TEXT].map((ch, i) =>
     ch === ' ' ? '<span class="gap"></span>' : `<span style="--i:${i};--r:${i % 2 ? 9 : -9}">${ch}</span>`
   ).join('');
-  models.forEach((m, i) => { m.style.setProperty('--m', i); m.style.setProperty('--r', [-14, 10, -6, 12, -16][i] || 0); });
 
-  // Matches the CSS: models land 70% into 1.25s; each letter starts at 1.55s + i × .13s
+  // Matches the CSS: the wallpaper lands 70% into 1.25s; each letter starts at 1.55s + i × .13s
   // and hits the screen 60% into its .42s slap.
   const LAND_AT = 0.875;
   const SLAM_TIMES = [...TEXT].map((ch, i) => (ch === ' ' ? null : 1.55 + i * 0.13 + 0.25)).filter((t) => t !== null);
@@ -131,7 +130,7 @@
     setTimeout(remove, 1400);
   }
 
-  // Start as soon as the models are loaded (or after 2.5s on a slow connection)
+  // Start as soon as the wallpaper is loaded (or after 2.5s on a slow connection)
   const pending = models.filter((m) => !m.complete);
   if (!pending.length) play();
   else {
