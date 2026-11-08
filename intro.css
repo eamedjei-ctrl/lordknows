@@ -1,0 +1,131 @@
+/* =========================================================================
+   Welcome intro — the five looks are thrown up, then LORD KNOWS slaps on
+   letter by letter. Styled to the runway: white, Helvetica, square buttons.
+   ========================================================================= */
+
+.intro { display: none; }
+.js .intro {
+  position: fixed; inset: 0;
+  z-index: 200;
+  display: block;
+  overflow: hidden;
+  background: #fff;
+  color: #151413;
+  font-family: Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  transition: transform .9s cubic-bezier(.76, 0, .24, 1);
+}
+.intro-open, .intro-open body { overflow: hidden; }
+.intro-kicker {
+  margin: 0;
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  color: #66625c;
+}
+.intro.is-leaving { transform: translateY(-100%); }
+
+/* ---- Stage: models + the slapped word ---- */
+.intro-stage { position: absolute; inset: 0; }
+.intro-models {
+  position: absolute; left: 0; right: 0; bottom: -2vh;
+  z-index: 0;
+  display: flex; justify-content: center; align-items: flex-end;
+  height: 82vh;
+  pointer-events: none;
+}
+.intro-models img {
+  height: 100%; width: auto;
+  margin: 0 -3.2vh;
+  object-fit: contain;
+  opacity: 0;
+}
+.intro-models img:nth-child(3) { position: relative; z-index: 2; height: 104%; }
+.intro-models img:nth-child(2), .intro-models img:nth-child(4) { position: relative; z-index: 1; }
+.intro-scrim {
+  position: absolute; inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(255,255,255,.35), rgba(255,255,255,.8) 50%, rgba(255,255,255,.35));
+  opacity: 0;
+}
+.intro-center {
+  position: absolute; inset: 0;
+  z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 22px;
+  padding: 24px;
+  text-align: center;
+}
+.intro-word {
+  display: flex;
+  margin: 0;
+  font-size: clamp(56px, 15vw, 230px);
+  font-weight: 700;
+  line-height: .85;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #151413;
+}
+.intro-word span { display: inline-block; opacity: 0; }
+.intro-word .gap { width: .2em; }
+.intro-welcome {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; transform: translateY(12px);
+}
+.intro-welcome p { margin: 0; font-size: 15px; line-height: 1.55; color: #151413; }
+.intro-welcome p span { color: #66625c; }
+.intro-skip {
+  position: absolute; left: 0; right: 0; bottom: 22px;
+  z-index: 2;
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase; text-align: center;
+  color: #66625c;
+  opacity: 0;
+}
+
+/* ---- The sequence ---- */
+.is-playing .intro-models img {
+  animation: intro-throw 1.25s cubic-bezier(.33, 1, .68, 1) both;
+  animation-delay: calc(var(--m, 0) * .07s);
+}
+.is-playing .intro-scrim { animation: intro-fade .45s 1.3s forwards; }
+.is-playing .intro-word span {
+  animation: slap .42s cubic-bezier(.2, 1.4, .4, 1) forwards;
+  animation-delay: calc(1.55s + var(--i, 0) * .13s);
+}
+.is-playing .intro-welcome { animation: intro-rise .6s 3.15s cubic-bezier(.2, .7, .2, 1) forwards; }
+.is-playing .intro-skip { animation: intro-fade .6s 1.6s forwards; }
+
+/* Each model is thrown up onto the stage and lands with a bounce */
+@keyframes intro-throw {
+  0%   { opacity: 0; transform: translateY(105vh) rotate(calc(var(--r, 0) * 1deg)) scale(.6); }
+  15%  { opacity: 1; }
+  70%  { opacity: 1; transform: translateY(-3%) rotate(calc(var(--r, 0) * -.12deg)) scale(1.02); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes slap {
+  0%   { opacity: 0; transform: scale(3.2) rotate(calc(var(--r, 0) * 1deg)); filter: blur(6px); }
+  60%  { opacity: 1; transform: scale(.92) rotate(calc(var(--r, 0) * -.2deg)); filter: none; }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes intro-fade { to { opacity: 1; } }
+@keyframes intro-rise { to { opacity: 1; transform: none; } }
+
+/* Tall screens: LORD over KNOWS so the word can be bigger, three models */
+@media (max-aspect-ratio: 3 / 4) {
+  .intro-word { flex-wrap: wrap; justify-content: center; font-size: 21vw; }
+  .intro-word .gap { flex-basis: 100%; height: 0; }
+  .intro-models { height: 66vh; }
+  .intro-models img { flex: 0 0 auto; margin: 0 -14vw; }
+  .intro-models img:nth-child(1), .intro-models img:nth-child(5) { display: none; }
+  .intro-welcome p { font-size: 14px; }
+  .intro-welcome p span { display: block; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .intro { transition: opacity .3s ease; }
+  .intro.is-leaving { transform: none; opacity: 0; }
+  .is-playing .intro-models img,
+  .is-playing .intro-scrim,
+  .is-playing .intro-word span,
+  .is-playing .intro-welcome,
+  .is-playing .intro-skip { animation: none; opacity: 1; transform: none; filter: none; }
+}
