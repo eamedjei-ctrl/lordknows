@@ -7,47 +7,32 @@
   const LK = window.LordKnows;
   const grid = document.querySelector('[data-shop-grid]');
   if (!LK || !grid) return;
-  const { PRODUCTS, Bag, money, hasPrice } = LK;
+  const { PRODUCTS, DATA, Bag, money, hasPrice } = LK;
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Product shots on a plain backdrop are shown whole (contain) on their own
-  // backdrop colour; everything else fills the card.
-  const STUDIO = {
-    'classic-trucker-cap': '#ffffff',
-    'cross-graphic-tee-black': '#ffffff',
-    'cross-graphic-tee-white': '#070808',
-    'fallen-angel-shirt-black-back': '#f1f1f1',
-    'fallen-angel-shirt-black': '#ffffff',
-    'fallen-angel-shirt-white-long-sleeve': '#cbc9c7',
-    'fallen-angel-tee': '#b2b2b2',
-    'feather-button-shirt': '#ecebe9',
-    'feather-shirt-detail': '#bbbbbb',
-    'heart-of-the-messiah-tee': '#a9a9ab',
-    'signature-shirt': '#757379',
-    'armour-of-god-artwork-hd': '#f2f2f2',
-    'popup-display': '#0e1015',
-  };
-  const LINES = { graphic: 'Graphic', shirts: 'Shirt', stadium: 'Stadium set', club: 'Girls’ Club', caps: 'Cap' };
-  const ORDER = ['armour-shirt', 'armour-shirt-black', 'fallen-shirt-black', 'fallen-longsleeve', 'fallen-tee', 'messiah-tee', 'gothic-tee-black', 'gothic-tee-white',
-    'college-tee-white', 'college-tee-black', 'lord-knows-joggers', 'salvation-joggers',
-    'feather-shirt-black', 'feather-shirt-white', 'signature-shirt',
-    'club-tee-green', 'club-tee-pink', 'raglan-crop', 'club-trucker', 'red-trucker', 'classic-trucker'];
+  // Lines (with their colour) and the shop order come from the CMS.
+  const LINES = DATA.lines || {};
+  const ORDER = DATA.order || Object.keys(PRODUCTS);
+  const ON_DARK = new Set(['green', 'pink', 'gold']); // light colours get dark text
+  const toneStyle = (t) => (t ? `--tone:var(--lk-${t});--tone-on:${ON_DARK.has(t) ? 'var(--lk-ink)' : '#fff'}` : '');
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const src = (n, w) => `assets/images/web/${n}-${w}.webp`;
-  const img = (n, alt) => `<img src="${src(n, 720)}" srcset="${src(n, 720)} 720w, ${src(n, 1400)} 1400w" sizes="(max-width: 749px) 50vw, (max-width: 1099px) 33vw, 25vw" alt="${esc(alt)}" loading="lazy" decoding="async"${STUDIO[n] ? ' style="--fit:contain"' : ''}>`;
+  // g = gallery photo { sm, lg, bg, fit }. Product shots on a plain backdrop
+  // are shown whole (fit: contain) on their own backdrop colour.
+  const img = (g, alt) => `<img src="${g.sm}" srcset="${g.sm} 720w, ${g.lg} 1400w" sizes="(max-width: 749px) 50vw, (max-width: 1099px) 33vw, 25vw" alt="${esc(alt)}" loading="lazy" decoding="async"${g.fit === 'contain' ? ' style="--fit:contain"' : ''}>`;
 
   // ---- Render the cards ----
   grid.innerHTML = ORDER.filter((id) => PRODUCTS[id]).map((id) => {
     const p = PRODUCTS[id];
-    const g = p.gallery || [];
-    const bg = STUDIO[g[0]] || '#f4f4f4';
+    // no gallery photos yet: fall back to the product's own image
+    const g = p.gallery?.length ? p.gallery : [{ sm: p.img, lg: p.img, fit: p.cutout ? 'contain' : 'cover' }];
+    const bg = (g[0] && g[0].bg) || '#f4f4f4';
     const one = p.sizes.length === 1;
     const pills = one ? '' : `<div class="lk-pills" role="group" aria-label="Size for ${esc(p.name)}">${p.sizes.map((s) =>
       `<button type="button" class="lk-pill" data-size="${esc(s)}" aria-pressed="false">${esc(s)}</button>`).join('')}</div>`;
-    return `<article class="lk-card" data-pid="${id}" data-line="${p.line}" id="p-${id}">
-      <div class="lk-card-media" style="--bg:${bg}">
-        <span class="lk-card-tag">${LINES[p.line] || ''}</span>
+    return `<article class="lk-card" data-pid="${id}" data-line="${esc(p.line)}" style="${toneStyle(LINES[p.line]?.tone)}" id="p-${id}">
+      <div class="lk-card-media" style="--bg:${esc(bg)}">
+        <span class="lk-card-tag">${esc(LINES[p.line]?.tag || '')}</span>
         ${g.slice(0, 2).map((n, i) => img(n, i ? `${p.name}, ${p.meta}: second view` : `${p.name}, ${p.meta}`)).join('')}
       </div>
       <span class="lk-card-meta">${esc(p.meta)}</span>
@@ -117,7 +102,7 @@
   if (zoom && typeof zoom.showModal === 'function') {
     const zimg = zoom.querySelector('img');
     document.querySelectorAll('[data-zoom]').forEach((b) => b.addEventListener('click', () => {
-      zimg.src = src(b.dataset.zoom, 1400);
+      zimg.src = b.dataset.zoom;
       zimg.alt = b.querySelector('img').alt;
       zoom.showModal();
     }));

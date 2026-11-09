@@ -6,117 +6,24 @@
   'use strict';
 
   // ---------------------------------------------------------------------------
-  // Catalogue. Set `price` to a number (e.g. 350) to show prices, the bundle
-  // total and the saving; leave it null to keep prices off the page.
+  // Catalogue: products, looks and settings come from the CMS. The server
+  // renders them into <script id="lk-data"> (see backend/app/site.py).
+  // A product's `price` is a number, or null to keep prices off the page.
+  // Each look's `tone` picks its UI colour from the product palette in
+  // runway.css (red, flame, green, pink, gold, ink).
   // ---------------------------------------------------------------------------
-  const CURRENCY = 'GHS';
-  const BUNDLE_SAVING = 0.10;
-  const APPAREL = ['S', 'M', 'L', 'XL', '2XL'];
-  const ONE_SIZE = ['One size'];
-  const IMG = 'assets/images/';
-
-  // gallery: photos shown in The Collection (first = main, second = hover view).
-  const W = (name) => `${IMG}web/${name}-720.webp`;
-  const PRODUCTS = {
-    // ---- in the runway looks
-    'college-tee-black': { name: 'College Tee', meta: 'Black · Est. MMXXIII', img: IMG + 'runway/college-tee-black.webp', w: 480, h: 600, sizes: APPAREL, price: null, gallery: ['tracksuit-stadium', 'black-set'], line: 'stadium' },
-    'college-tee-white': { name: 'College Tee', meta: 'Cream · Est. MMXXIII', img: IMG + 'runway/college-tee-white.webp', w: 480, h: 600, sizes: APPAREL, price: null, gallery: ['college-tee', 'stadium-friends'], line: 'stadium' },
-    'lord-knows-joggers': { name: 'Lord Knows Joggers', meta: 'Black · Red logo', img: IMG + 'cutouts/lord-knows-joggers.webp', w: 314, h: 601, cutout: true, sizes: APPAREL, price: null, gallery: ['black-set', 'stadium-trio'], line: 'stadium' },
-    'salvation-joggers': { name: 'Salvation Joggers', meta: 'Black · Leg print', img: IMG + 'cutouts/salvation-joggers.webp', w: 287, h: 595, cutout: true, sizes: APPAREL, price: null, gallery: ['set-front-back'], line: 'stadium' },
-    'classic-trucker': { name: 'Classic Trucker Cap', meta: 'Black / white · Limited edition', img: IMG + 'cutouts/classic-trucker.webp', w: 533, h: 500, cutout: true, sizes: ONE_SIZE, price: null, gallery: ['classic-trucker-cap', 'popup-display'], line: 'caps' },
-    'club-trucker': { name: 'Girls’ Club Trucker', meta: 'Green / white', img: IMG + 'cutouts/club-trucker.webp', w: 716, h: 493, cutout: true, sizes: ONE_SIZE, price: null, gallery: ['girls-club-trucker', 'girls-club-set'], line: 'club' },
-    'red-trucker': { name: 'Red Trucker Cap', meta: 'Red / black', img: W('red-trucker-cap-detail'), w: 720, h: 889, sizes: ONE_SIZE, price: null, gallery: ['red-trucker-cap-model', 'red-trucker-cap-detail'], line: 'caps' },
-    // ---- graphic shirts & tees
-    'armour-shirt': { name: 'Armour of God Shirt', meta: 'White · Back print', img: W('armour-of-god-shirt'), w: 720, h: 894, sizes: APPAREL, price: null, gallery: ['armour-of-god-shirt', 'armour-of-god-artwork-hd'], line: 'graphic' },
-    'armour-shirt-black': { name: 'Armour of God Shirt', meta: 'Black · Front & back', img: W('fallen-angel-shirt-black'), w: 720, h: 433, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-black', 'armour-of-god-artwork-hd'], line: 'graphic' },
-    'fallen-shirt-black': { name: 'Fallen Angel Shirt', meta: 'Black · Back print', img: W('fallen-angel-shirt-black-back'), w: 720, h: 732, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-black-back'], line: 'graphic' },
-    'fallen-longsleeve': { name: 'Fallen Angel Long Sleeve', meta: 'White · Back print', img: W('fallen-angel-shirt-white-long-sleeve'), w: 720, h: 740, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-white-long-sleeve'], line: 'graphic' },
-    'fallen-tee': { name: 'Fallen Angel Tee', meta: 'White · Back print', img: W('fallen-angel-tee'), w: 720, h: 720, sizes: APPAREL, price: null, gallery: ['fallen-angel-tee'], line: 'graphic' },
-    'messiah-tee': { name: 'Heart of the Messiah Tee', meta: 'White · Our Father print', img: W('heart-of-the-messiah-tee'), w: 720, h: 788, sizes: APPAREL, price: null, gallery: ['heart-of-the-messiah-tee'], line: 'graphic' },
-    'gothic-tee-black': { name: 'Gothic Logo Tee', meta: 'Black · Cross graphic', img: W('cross-graphic-tee-black'), w: 720, h: 587, sizes: APPAREL, price: null, gallery: ['cross-graphic-tee-black'], line: 'graphic' },
-    'gothic-tee-white': { name: 'Gothic Logo Tee', meta: 'White · Cross graphic', img: W('cross-graphic-tee-white'), w: 720, h: 591, sizes: APPAREL, price: null, gallery: ['cross-graphic-tee-white'], line: 'graphic' },
-    // ---- shirts
-    'feather-shirt-black': { name: 'Feather Shirt', meta: 'Black · Gold feathers', img: W('feather-button-shirt'), w: 720, h: 718, sizes: APPAREL, price: null, gallery: ['feather-button-shirt'], line: 'shirts' },
-    'feather-shirt-white': { name: 'Feather Shirt', meta: 'White · Gold feathers', img: W('feather-shirt-detail'), w: 720, h: 736, sizes: APPAREL, price: null, gallery: ['feather-shirt-detail'], line: 'shirts' },
-    'signature-shirt': { name: 'Signature Shirt', meta: 'White · Script logo', img: W('signature-shirt'), w: 720, h: 705, sizes: APPAREL, price: null, gallery: ['signature-shirt'], line: 'shirts' },
-    // ---- girls' club
-    'club-tee-green': { name: 'Girls’ Club Ringer Tee', meta: 'White / green', img: W('girls-club-set'), w: 720, h: 858, sizes: APPAREL, price: null, gallery: ['girls-club-set', 'girls-club-trucker'], line: 'club' },
-    'club-tee-pink': { name: 'Girls’ Club Ringer Tee', meta: 'White / pink', img: W('girls-club-tee'), w: 720, h: 813, sizes: APPAREL, price: null, gallery: ['girls-club-tee'], line: 'club' },
-    'raglan-crop': { name: 'Raglan Crop Tee', meta: 'White / black', img: W('raglan-tee'), w: 720, h: 898, sizes: APPAREL, price: null, gallery: ['raglan-tee'], line: 'club' },
-  };
-
-  // pin: [left %, top %] of the figure box, where the piece sits on the model.
-  // `tone` picks the UI colour for each look from the product palette in
-  // runway.css (red, flame, green, pink, gold, ink): the colour its pieces carry.
-  const LOOKS = [
-    { name: 'Built for the Long Run', tone: 'red', img: 'look-1', items: [
-      { id: 'college-tee-black', pin: [50, 26] },
-      { id: 'lord-knows-joggers', pin: [57, 52] },
-      { id: 'red-trucker' },
-    ] },
-    { name: 'Everyday Uniform', tone: 'ink', img: 'look-2', items: [
-      { id: 'college-tee-black', pin: [70, 31] },
-      { id: 'lord-knows-joggers', pin: [72, 56] },
-      { id: 'classic-trucker' },
-    ] },
-    { name: 'Salvation', tone: 'red', img: 'look-3', items: [
-      { id: 'college-tee-black', pin: [49, 30] },
-      { id: 'salvation-joggers', pin: [51, 78] },
-      { id: 'classic-trucker' },
-    ] },
-    { name: 'Stadium Days', tone: 'red', img: 'look-4', items: [
-      { id: 'college-tee-black', pin: [50, 30] },
-      { id: 'lord-knows-joggers', pin: [52, 60] },
-      { id: 'red-trucker' },
-    ] },
-    { name: 'New Classics', tone: 'green', img: 'look-5', items: [
-      { id: 'college-tee-white', pin: [44, 66] },
-      { id: 'lord-knows-joggers', pin: [22, 87] },
-      { id: 'club-trucker' },
-    ] },
-    // Looks 6-14 are AVIF cutouts. `rack: true` marks a garment display
-    // (shirts floating, no model), drawn without the floor shadow.
-    { name: 'Girls’ Club', tone: 'green', img: 'look-6', ext: 'avif', items: [
-      { id: 'club-tee-green', pin: [50, 68] },
-      { id: 'club-trucker', pin: [22, 21] },
-    ] },
-    { name: 'Armour of God', tone: 'gold', img: 'look-7', ext: 'avif', rack: true, items: [
-      { id: 'armour-shirt-black', pin: [38, 30] },
-      { id: 'armour-shirt', pin: [60, 54] },
-    ] },
-    { name: 'Pretty in Pink', tone: 'pink', img: 'look-8', ext: 'avif', items: [
-      { id: 'club-tee-pink', pin: [57, 66] },
-    ] },
-    { name: 'Fallen Angel', tone: 'flame', img: 'look-9', ext: 'avif', rack: true, items: [
-      { id: 'fallen-shirt-black', pin: [40, 25] },
-      { id: 'fallen-longsleeve', pin: [64, 48] },
-      { id: 'fallen-tee', pin: [42, 73] },
-    ] },
-    { name: 'Monochrome', tone: 'ink', img: 'look-10', ext: 'avif', items: [
-      { id: 'raglan-crop', pin: [53, 61] },
-      { id: 'classic-trucker', pin: [47, 19] },
-    ] },
-    { name: 'Heart of the Messiah', tone: 'red', img: 'look-11', ext: 'avif', rack: true, items: [
-      { id: 'messiah-tee', pin: [50, 48] },
-    ] },
-    { name: 'Front Row', tone: 'red', img: 'look-12', ext: 'avif', items: [
-      { id: 'college-tee-white', pin: [47, 63] },
-      { id: 'lord-knows-joggers', pin: [18, 84] },
-    ] },
-    { name: 'Gothic', tone: 'ink', img: 'look-13', ext: 'avif', rack: true, items: [
-      { id: 'gothic-tee-black', pin: [43, 35] },
-      { id: 'gothic-tee-white', pin: [57, 63] },
-    ] },
-    { name: 'Sunday Best', tone: 'gold', img: 'look-14', ext: 'avif', rack: true, items: [
-      { id: 'feather-shirt-black', pin: [38, 28] },
-      { id: 'signature-shirt', pin: [63, 48] },
-      { id: 'feather-shirt-white', pin: [42, 72] },
-    ] },
-  ];
+  const DATA = (() => {
+    try { return JSON.parse(document.getElementById('lk-data')?.textContent || '{}'); } catch { return {}; }
+  })();
+  const CURRENCY = DATA.currency || 'GHS';
+  const BUNDLE_SAVING = DATA.bundleSaving ?? 0.10;
+  const PRODUCTS = DATA.products || {};
+  const LOOKS = DATA.looks || [];
+  const COPY = { title: 'Try the Look.', sub: `${LOOKS.length} looks, styled head to toe. Tap a pin to see the piece.`, ...DATA.runway };
 
   const VARIANTS = {};
   Object.entries(PRODUCTS).forEach(([pid, p]) => {
-    p.thumb = `${IMG}thumbs/${pid}.avif`; // 240px-wide AVIF for the small thumbnails
+    p.thumb = p.thumb || p.img; // small (240px) image for the bag, picker and panel
     p.variants = p.sizes.map((size) => {
       const id = `${pid}/${size}`;
       VARIANTS[id] = { id, pid, size };
@@ -137,7 +44,7 @@
   })();
   const hasPrice = (pid) => typeof PRODUCTS[pid].price === 'number';
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const lookSrc = (look, w) => `${IMG}runway/${look.img}-${w}.${look.ext || 'webp'}`;
+  const lookSrc = (look, w) => look.src[w];
 
   const ICONS = {
     plus: '<svg class="rw__i-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>',
@@ -284,6 +191,7 @@
     connectedCallback() {
       if (this.ready) return;
       this.ready = true;
+      if (!LOOKS.length) { this.hidden = true; return; } // nothing published yet
 
       this.n = LOOKS.length;
       this.N = this.n * Math.ceil(8 / this.n);
@@ -385,12 +293,12 @@
             <div class="rw__left">
               <div class="rw__head">
                 <div class="rw__intro">
-                  <h2 class="rw__title">Try the Look.</h2>
-                  <p class="rw__sub">${n} looks, styled head to toe. Tap a pin to see the piece.</p>
+                  <h2 class="rw__title">${esc(COPY.title)}</h2>
+                  <p class="rw__sub">${esc(COPY.sub)}</p>
                 </div>
                 <span class="rw__sr" aria-live="polite" aria-atomic="true" data-rw-live></span>
               </div>
-              <div class="rw__stage" data-rw-stage tabindex="0" role="region" aria-roledescription="carousel" aria-label="Try the Look. — use arrow keys or swipe to change look">
+              <div class="rw__stage" data-rw-stage tabindex="0" role="region" aria-roledescription="carousel" aria-label="${esc(COPY.title)} — use arrow keys or swipe to change look">
                 <div class="rw__actors" data-rw-actors>${bodies}</div>
                 <div class="rw__heroes" data-rw-heroes>${heroes}</div>
                 <span class="rw__sweep" aria-hidden="true"></span>
@@ -1184,6 +1092,6 @@
   BagDialog.init();
   Bag.changed(false);
   // Shared with shop.js (The Collection)
-  window.LordKnows = { PRODUCTS, Bag, money, hasPrice, BagDialog };
+  window.LordKnows = { PRODUCTS, DATA, Bag, money, hasPrice, BagDialog };
   if (!customElements.get('runway-section')) customElements.define('runway-section', RunwaySection);
 })();

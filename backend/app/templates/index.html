@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+{#- Rendered by the backend from the CMS (app/routers/public.py). -#}
+{% set S = site.block("site") %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>{{ S.title }}</title>
+  <meta name="description" content="{{ S.description }}">
+  <link rel="preload" as="image" href="assets/images/intro-art/angel.avif" type="image/avif" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/images/intro-art/fallen.avif" type="image/avif" fetchpriority="high">
+  {% if first_look %}<link rel="preload" as="image" href="{{ first_look }}" fetchpriority="low">{% endif %}
+  <link rel="stylesheet" href="runway.css">
+  <link rel="stylesheet" href="sections.css">
+  <link rel="stylesheet" href="intro.css">
+  <script>document.documentElement.classList.add('js','intro-open');</script>
+</head>
+{%- macro img(m, sizes, alt=None) -%}
+{%- if m -%}<img src="{{ pick(m, 720) }}" srcset="{{ srcset(m) }}" sizes="{{ sizes }}" alt="{{ m.alt if alt is none else alt }}" width="{{ picked_size(m, 720)[0] }}" height="{{ picked_size(m, 720)[1] }}" loading="lazy" decoding="async">{%- endif -%}
+{%- endmacro %}
+<body>
+
+  <!-- Welcome intro: the good and the fallen angel drop from the sky and land in the artwork -->
+  <div class="intro" aria-label="Welcome to Lord Knows">
+    <div class="intro-stage">
+      <div class="intro-art" role="img" aria-label="Lord Knows: an angel in red strikes down a fallen angel. Put on all the armor that God gives, so you can defend yourself against the devil's tricks.">
+        <picture><source srcset="assets/images/intro-art/letter-0.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-0.webp" alt="" style="left:2.837%;top:2.0%;width:7.837%;height:39.036%;--i:0"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-1.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-1.webp" alt="" style="left:10.0%;top:1.571%;width:10.769%;height:35.5%;--i:1"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-2.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-2.webp" alt="" style="left:20.096%;top:1.464%;width:10.288%;height:39.5%;--i:2"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-3.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-3.webp" alt="" style="left:29.712%;top:1.571%;width:12.212%;height:41.179%;--i:3"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-4.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-4.webp" alt="" style="left:41.25%;top:1.643%;width:10.769%;height:25.357%;--i:4"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-5.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-5.webp" alt="" style="left:51.346%;top:1.429%;width:11.49%;height:18.536%;--i:5"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-6.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-6.webp" alt="" style="left:62.163%;top:1.393%;width:9.808%;height:41.714%;--i:6"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-7.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-7.webp" alt="" style="left:71.298%;top:1.536%;width:15.817%;height:41.571%;--i:7"></picture>
+        <picture><source srcset="assets/images/intro-art/letter-8.avif" type="image/avif"><img class="ia ia--letter" src="assets/images/intro-art/letter-8.webp" alt="" style="left:86.442%;top:1.607%;width:10.529%;height:39.25%;--i:8"></picture>
+        <picture><source srcset="assets/images/intro-art/fallen.avif" type="image/avif"><img class="ia ia--fallen" src="assets/images/intro-art/fallen.webp" alt="" style="left:12.308%;top:44.429%;width:65.0%;height:47.964%"></picture>
+        <picture><source srcset="assets/images/intro-art/angel.avif" type="image/avif"><img class="ia ia--angel" src="assets/images/intro-art/angel.webp" alt="" style="left:2.837%;top:1.214%;width:94.135%;height:71.75%"></picture>
+        <picture><source srcset="assets/images/intro-art/ribbon.avif" type="image/avif"><img class="ia ia--ribbon" src="assets/images/intro-art/ribbon.webp" alt="" style="left:64.615%;top:1.5%;width:32.26%;height:47.143%"></picture>
+        <picture><source srcset="assets/images/intro-art/flowers.avif" type="image/avif"><img class="ia ia--flowers" src="assets/images/intro-art/flowers.webp" alt="" style="left:12.404%;top:56.929%;width:66.538%;height:34.286%"></picture>
+        <picture><source srcset="assets/images/intro-art/star-1.avif" type="image/avif"><img class="ia ia--star" src="assets/images/intro-art/star-1.webp" alt="" style="left:12.404%;top:45.179%;width:10.048%;height:15.786%;--s:0"></picture>
+        <picture><source srcset="assets/images/intro-art/star-2.avif" type="image/avif"><img class="ia ia--star" src="assets/images/intro-art/star-2.webp" alt="" style="left:73.702%;top:45.143%;width:9.952%;height:15.821%;--s:1"></picture>
+        <picture><source srcset="assets/images/intro-art/verse-1.avif" type="image/avif"><img class="ia ia--verse" src="assets/images/intro-art/verse-1.webp" alt="" style="left:6.202%;top:91.893%;width:85.817%;height:4.429%;--v:0"></picture>
+        <picture><source srcset="assets/images/intro-art/verse-2.avif" type="image/avif"><img class="ia ia--verse" src="assets/images/intro-art/verse-2.webp" alt="" style="left:3.75%;top:95.821%;width:90.673%;height:2.821%;--v:1"></picture>
+        <span class="ia-dust ia-dust--bad" aria-hidden="true"></span>
+        <span class="ia-dust ia-dust--good" aria-hidden="true"></span>
+      </div>
+    </div>
+    <p class="intro-kicker">{{ S.intro_kicker }}</p>
+    <span class="intro-skip" aria-hidden="true">Tap anywhere to skip</span>
+  </div>
+
+  <header class="site-header shopify-section-group-header-group">
+    <a href="./" class="brand" aria-label="Runway home"><span class="brand-mark">Lord Knows</span></a>
+    <nav aria-label="Main navigation">
+      <a href="#Runway-lord-knows" aria-current="page">Runway</a>
+      <a href="#shop">Shop</a>
+      <a href="#story" class="lk-nav-wide">{{ site.block("story").title | replace(".", "") }}</a>
+      <a href="#lookbook">Lookbook</a>
+      <a href="#community" class="lk-nav-wide">Community</a>
+    </nav>
+    <button type="button" id="open-bag" aria-label="Open styling bag">
+      <svg width="22" height="24" viewBox="0 0 24 26" aria-hidden="true"><path d="M8 10V6.5a4 4 0 0 1 8 0V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path fill="currentColor" d="M4.6 8h14.8c.5 0 .9.4 1 .9l1.3 14.4c.1.6-.4 1.2-1 1.2H3.3c-.6 0-1.1-.6-1-1.2L3.6 8.9c.1-.5.5-.9 1-.9z"/></svg>
+      <span data-cart-count>0</span>
+    </button>
+  </header>
+
+  <main>
+    <runway-section
+      id="Runway-lord-knows"
+      class="rw rw--add-icon rw--popup rw--list has-dividers has-border"
+      data-feel="balanced"
+      data-blur="true"
+      data-mblur="true"
+      data-style="ring"
+      data-mstyle="classic"
+      data-fit="true"
+      data-height-mode="original"
+      data-height-vh="100"
+      data-mheight-mode="custom"
+      data-mheight-vh="109"
+      data-reflect="false"
+      data-autoplay="true"
+      data-speed="5000"
+      data-after-add="stay"
+      data-bundle-code=""
+      data-msg-choose="Pick a size for: [items]"
+      data-msg-error="Couldn’t add to bag. Please try again."
+      data-msg-soldout="Sold out"></runway-section>
+
+    {% set B = site.block("shop") %}
+    <!-- The Collection -->
+    <section class="lk-sec lk-shop" id="shop" aria-labelledby="shop-title">
+      <div class="lk-head">
+        <p class="lk-kicker">{{ B.kicker }}</p>
+        <h2 class="lk-title" id="shop-title">{{ B.title }}</h2>
+        <p class="lk-sub">{{ B.sub }}</p>
+      </div>
+      <div class="lk-filters" role="group" aria-label="Filter the collection">
+        <button type="button" class="lk-filter" data-filter="all" aria-pressed="true">All</button>
+        {%- for l in site.lines if data.products.values() | selectattr("line", "equalto", l.key) | list %}
+        <button type="button" class="lk-filter" data-filter="{{ l.key }}" style="{{ tone_style(l.tone) }}" aria-pressed="false">{{ l.label }}</button>
+        {%- endfor %}
+      </div>
+      <div class="lk-grid" data-shop-grid></div>
+    </section>
+
+    {% set B = site.block("story") %}
+    {% set shirt = data.products.get(B.product_slug) %}
+    <!-- Armour of God -->
+    <section class="lk-sec lk-story" id="story" aria-labelledby="story-title">
+      <div class="lk-story-art">
+        {{ img(media.get(B.image_id), "(max-width: 1099px) 100vw, 50vw") }}
+      </div>
+      <div class="lk-story-text">
+        <p class="lk-kicker">{{ B.kicker }}</p>
+        <h2 class="lk-title" id="story-title">{{ B.title }}</h2>
+        {% if B.verse %}<blockquote class="lk-verse">{{ B.verse }}</blockquote>{% endif %}
+        <p class="lk-sub">{{ em(B.body) }}</p>
+        {%- if shirt %}
+        {% set g = shirt.gallery[0] if shirt.gallery else none %}
+        <div class="lk-story-shirt">
+          <img src="{{ g.sm if g else shirt.img }}"{% if g %} srcset="{{ g.sm }} 720w, {{ g.lg }} 1400w" sizes="(max-width: 749px) 40vw, 180px"{% endif %} alt="{{ shirt.name }}, {{ shirt.meta }}" loading="lazy" decoding="async">
+          <div>
+            <p class="lk-story-name">{{ shirt.name }}</p>
+            <p class="lk-story-meta">{{ shirt.meta }}</p>
+            <a class="lk-btn" href="#shop" data-shop-jump="{{ B.product_slug }}">{{ B.button_label }}</a>
+          </div>
+        </div>
+        {%- endif %}
+      </div>
+    </section>
+
+    {% set B = site.block("lookbook") %}
+    <!-- Lookbook -->
+    <section class="lk-sec lk-lookbook" id="lookbook" aria-labelledby="lookbook-title">
+      <div class="lk-head">
+        <p class="lk-kicker">{{ B.kicker }}</p>
+        <h2 class="lk-title" id="lookbook-title">{{ B.title }}</h2>
+        <p class="lk-sub">{{ B.sub }}</p>
+      </div>
+      <div class="lk-looks">
+        {%- for f in B["items"] if media.get(f.image_id) %}
+        {% set m = media[f.image_id] %}
+        <figure class="lk-look">
+          <button type="button" class="lk-look-btn" data-zoom="{{ pick(m, 1400) }}" aria-label="Enlarge: {{ f.caption or m.alt }}">{{ img(m, "(max-width: 749px) 50vw, 33vw") }}</button>
+          {% if f.caption %}<figcaption>{{ f.caption }}</figcaption>{% endif %}
+        </figure>
+        {%- endfor %}
+      </div>
+    </section>
+
+    {% set B = site.block("club") %}
+    {% set club_line = site.lines | selectattr("key", "equalto", B.line_key) | first %}
+    <!-- Girls' Club -->
+    <section class="lk-sec lk-club" id="girls-club" aria-labelledby="club-title">
+      <div class="lk-head lk-head--row">
+        <div>
+          <p class="lk-kicker">{{ B.kicker }}</p>
+          <h2 class="lk-title" id="club-title">{{ B.title }}</h2>
+          <p class="lk-sub">{{ B.sub }}</p>
+        </div>
+        {% if B.button_label %}<a class="lk-btn" href="#shop"{% if club_line %} data-shop-filter="{{ club_line.key }}"{% endif %}>{{ B.button_label }}</a>{% endif %}
+      </div>
+      <div class="lk-club-row">
+        {%- for f in B["items"] if media.get(f.image_id) %}
+        <figure class="lk-club-fig">
+          {{ img(media[f.image_id], "(max-width: 749px) 50vw, 25vw") }}
+          {% if f.caption %}<figcaption>{{ f.caption }}</figcaption>{% endif %}
+        </figure>
+        {%- endfor %}
+      </div>
+    </section>
+
+    {% set B = site.block("community") %}
+    <!-- Community -->
+    <section class="lk-sec lk-community" id="community" aria-labelledby="community-title">
+      <div class="lk-head">
+        <p class="lk-kicker">{{ B.kicker }}</p>
+        <h2 class="lk-title" id="community-title">{{ B.title }}</h2>
+        <p class="lk-sub">{{ B.sub }}</p>
+      </div>
+      <div class="lk-comm">
+        {%- for f in B["items"] if media.get(f.image_id) %}
+        <figure class="lk-comm-{{ 'abc'[loop.index0] }}">{{ img(media[f.image_id], "(max-width: 749px) 100vw, " ~ ("60vw" if loop.first else "40vw"), alt=(f.caption or none)) }}</figure>
+        {%- endfor %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="lk-foot">
+    <div class="lk-foot-top">
+      <span class="brand-mark">Lord Knows</span>
+      <nav aria-label="Footer">
+        <a href="#Runway-lord-knows">Runway</a>
+        <a href="#shop">Shop</a>
+        <a href="#story">{{ site.block("story").title | replace(".", "") }}</a>
+        <a href="#lookbook">Lookbook</a>
+        <a href="#girls-club">{{ site.block("club").title | replace(".", "") }}</a>
+        <a href="#community">Community</a>
+      </nav>
+    </div>
+    <p class="lk-foot-note">{{ S.footer_note }}</p>
+  </footer>
+
+  <dialog id="zoom-dialog" class="lk-zoom" aria-label="Enlarged photo">
+    <button type="button" class="lk-zoom-close" aria-label="Close">×</button>
+    <img alt="">
+  </dialog>
+
+  <dialog id="bag-dialog" aria-labelledby="bag-title">
+    <div class="bag-heading">
+      <h2 id="bag-title">Your styling bag</h2>
+      <button type="button" id="close-bag" aria-label="Close styling bag">×</button>
+    </div>
+    <p class="bag-note">{{ S.bag_note }}</p>
+    <div id="bag-items"></div>
+    <p id="bag-total"></p>
+    <button type="button" id="export-bag" disabled>Download outfit shortlist</button>
+  </dialog>
+
+  <div id="bag-status" role="status" aria-live="polite"></div>
+
+  <script type="application/json" id="lk-data">{{ data_json }}</script>
+  <script src="runway.js" defer></script>
+  <script src="shop.js" defer></script>
+  <script src="intro.js" defer></script>
+</body>
+</html>

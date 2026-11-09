@@ -1,0 +1,35 @@
+# Coolify: create a "Docker Compose" resource from this repo. Coolify fills in
+# the SERVICE_* variables itself (database user/password, admin token, domain).
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      - SERVICE_FQDN_APP_8000
+      - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@db:5432/${POSTGRES_DB:-lordknows}
+      - ADMIN_TOKEN=${SERVICE_PASSWORD_64_ADMIN}
+      - MEDIA_ROOT=/data/media
+    volumes:
+      - lk-media:/data/media # uploaded images: persistent
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${SERVICE_USER_POSTGRES}
+      - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
+      - POSTGRES_DB=${POSTGRES_DB:-lordknows}
+    volumes:
+      - lk-pgdata:/var/lib/postgresql/data # database: persistent
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  lk-media:
+  lk-pgdata:

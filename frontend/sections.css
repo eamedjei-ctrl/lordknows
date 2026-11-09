@@ -210,15 +210,9 @@
 }
 
 /* ---------------- Product colours ----------------
-   Each line wears the colour its pieces carry (palette in runway.css):
-   Stadium = College red, Graphic = Fallen Angel scarlet, Shirts = feather
-   gold, Girls' Club = pink, Caps = Club green. */
+   Each line wears a colour from the product palette (runway.css), chosen in
+   the CMS. The page sets --tone / --tone-on inline on each filter and card. */
 .lk-filter, .lk-card { --tone: var(--lk-ink); --tone-on: #fff; }
-[data-filter="stadium"], [data-line="stadium"] { --tone: var(--lk-red);   --tone-on: #fff; }
-[data-filter="graphic"], [data-line="graphic"] { --tone: var(--lk-flame); --tone-on: #fff; }
-[data-filter="shirts"],  [data-line="shirts"]  { --tone: var(--lk-gold);  --tone-on: var(--lk-ink); }
-[data-filter="club"],    [data-line="club"]    { --tone: var(--lk-pink);  --tone-on: var(--lk-ink); }
-[data-filter="caps"],    [data-line="caps"]    { --tone: var(--lk-green); --tone-on: var(--lk-ink); }
 
 .lk-filter { display: inline-flex; align-items: center; gap: 8px; }
 .lk-filter:not([data-filter="all"])::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tone); transition: background .2s; }
