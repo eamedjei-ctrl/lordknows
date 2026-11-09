@@ -11,6 +11,7 @@
   <link rel="preload" as="image" href="assets/images/intro-art/angel.avif" type="image/avif" fetchpriority="high">
   <link rel="preload" as="image" href="assets/images/intro-art/fallen.avif" type="image/avif" fetchpriority="high">
   {% if first_look %}<link rel="preload" as="image" href="{{ first_look }}" fetchpriority="low">{% endif %}
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="runway.css">
   <link rel="stylesheet" href="sections.css">
   <link rel="stylesheet" href="intro.css">
@@ -20,6 +21,7 @@
 {%- if m -%}<img src="{{ pick(m, 720) }}" srcset="{{ srcset(m) }}" sizes="{{ sizes }}" alt="{{ m.alt if alt is none else alt }}" width="{{ picked_size(m, 720)[0] }}" height="{{ picked_size(m, 720)[1] }}" loading="lazy" decoding="async">{%- endif -%}
 {%- endmacro %}
 <body>
+  <div class="lk-progress" aria-hidden="true"></div>
 
   <!-- Welcome intro: the good and the fallen angel drop from the sky and land in the artwork -->
   <div class="intro" aria-label="Welcome to Lord Knows">
@@ -50,7 +52,7 @@
     <span class="intro-skip" aria-hidden="true">Tap anywhere to skip</span>
   </div>
 
-  <header class="site-header shopify-section-group-header-group">
+  <header id="top" class="site-header shopify-section-group-header-group">
     <a href="./" class="brand" aria-label="Runway home"><span class="brand-mark">Lord Knows</span></a>
     <nav aria-label="Main navigation">
       <a href="#Runway-lord-knows" aria-current="page">Runway</a>
@@ -87,6 +89,22 @@
       data-msg-choose="Pick a size for: [items]"
       data-msg-error="Couldn’t add to bag. Please try again."
       data-msg-soldout="Sold out"></runway-section>
+
+    {#- Big scrolling type band (Site settings › ticker): two identical sets loop seamlessly -#}
+    {% set phrases = S.ticker.splitlines() | map("trim") | select | list %}
+    {% if phrases %}
+    <div class="lk-marquee" aria-hidden="true">
+      <div class="lk-marquee-track">
+        {%- for _ in range(2) %}
+        <div class="lk-marquee-set">
+          {%- for p in phrases * (3 if phrases | length < 4 else 2) %}
+          <span class="lk-mq-word{{ ' is-outline' if loop.index is even }}">{{ p }}</span><span class="lk-mq-star lk-mq-star--{{ ['red', 'gold', 'green', 'pink', 'flame'][loop.index0 % 5] }}">✦</span>
+          {%- endfor %}
+        </div>
+        {%- endfor %}
+      </div>
+    </div>
+    {% endif %}
 
     {% set B = site.block("shop") %}
     <!-- The Collection -->
@@ -189,18 +207,43 @@
   </main>
 
   <footer class="lk-foot">
-    <div class="lk-foot-top">
-      <span class="brand-mark">Lord Knows</span>
-      <nav aria-label="Footer">
-        <a href="#Runway-lord-knows">Runway</a>
-        <a href="#shop">Shop</a>
-        <a href="#story">{{ site.block("story").title | replace(".", "") }}</a>
-        <a href="#lookbook">Lookbook</a>
-        <a href="#girls-club">{{ site.block("club").title | replace(".", "") }}</a>
-        <a href="#community">Community</a>
-      </nav>
+    <div class="lk-foot-in">
+      <div class="lk-foot-top">
+        <div class="lk-foot-col">
+          <p class="lk-foot-label">Explore</p>
+          <nav aria-label="Footer">
+            <a href="#Runway-lord-knows">Runway</a>
+            <a href="#shop">Shop</a>
+            <a href="#story">{{ site.block("story").title | replace(".", "") }}</a>
+            <a href="#lookbook">Lookbook</a>
+            <a href="#girls-club">{{ site.block("club").title | replace(".", "") }}</a>
+            <a href="#community">Community</a>
+          </nav>
+        </div>
+        {%- set has_social = S.instagram or S.tiktok or S.x or S.youtube or S.whatsapp %}
+        {%- if has_social %}
+        <div class="lk-foot-col">
+          <p class="lk-foot-label">Follow</p>
+          <nav aria-label="Social">
+          {% if S.instagram %}<a href="{{ S.instagram }}" target="_blank" rel="noopener me">Instagram</a>{% endif %}
+          {% if S.tiktok %}<a href="{{ S.tiktok }}" target="_blank" rel="noopener me">TikTok</a>{% endif %}
+          {% if S.x %}<a href="{{ S.x }}" target="_blank" rel="noopener me">X</a>{% endif %}
+          {% if S.youtube %}<a href="{{ S.youtube }}" target="_blank" rel="noopener me">YouTube</a>{% endif %}
+          {% if S.whatsapp %}<a href="{{ S.whatsapp }}" target="_blank" rel="noopener me">WhatsApp</a>{% endif %}
+          </nav>
+        </div>
+        {%- endif %}
+        {%- if S.contact_email %}
+        <div class="lk-foot-col">
+          <p class="lk-foot-label">Contact</p>
+          <a class="lk-foot-mail" href="mailto:{{ S.contact_email }}">{{ S.contact_email }}</a>
+        </div>
+        {%- endif %}
+        <a class="lk-foot-top-link" href="#top">Back to top ↑</a>
+      </div>
+      <p class="lk-foot-mark" aria-hidden="true">Lord Knows</p>
+      <p class="lk-foot-note">{{ S.footer_note }}</p>
     </div>
-    <p class="lk-foot-note">{{ S.footer_note }}</p>
   </footer>
 
   <dialog id="zoom-dialog" class="lk-zoom" aria-label="Enlarged photo">

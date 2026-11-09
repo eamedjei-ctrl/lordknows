@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 Short = Annotated[str, Field(max_length=200)]
 Long = Annotated[str, Field(max_length=2000)]
+Url = Annotated[str, Field(max_length=300, pattern=r"^(https://[^\s<>\"]+)?$")]
 
 
 class Block(BaseModel):
@@ -29,6 +30,14 @@ class SiteBlock(Block):
     footer_note: Short = ""
     bag_note: Long = ""
     intro_kicker: Short = ""
+    # the big scrolling type band under the runway: one phrase per line
+    ticker: Long = "Lord Knows\nArmour of God\nGirls’ Club\nStadium Days\nEst. MMXXIII"
+    # social links: shown in the footer once filled in
+    instagram: Url = ""
+    tiktok: Url = ""
+    x: Url = ""
+    youtube: Url = ""
+    whatsapp: Url = ""  # e.g. https://wa.me/233XXXXXXXXX
 
 
 class RunwayBlock(Block):

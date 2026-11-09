@@ -644,11 +644,14 @@ async function linesPage() {
 const T = (key, label, hint, extra = {}) => ({ key, label, hint, type: 'text', ...extra });
 const A = (key, label, hint) => ({ key, label, hint, type: 'area' });
 const SECTIONS = {
-  site: { title: 'Site settings', about: 'Browser title, search description, currency, contact details and small print.', fields: [
+  site: { title: 'Site settings', about: 'Browser title, search description, currency, contact, socials, the scrolling band and small print.', fields: [
     T('title', 'Browser tab title'), A('description', 'Search & share description', 'Shown by Google and when the link is shared.'),
     T('currency', 'Currency code', 'e.g. GHS, USD.'), { key: 'bundle_saving', label: 'Full-look saving (%)', hint: 'Discount shown when someone adds a whole look. 0 = none.', type: 'percent' },
     T('contact_email', 'Contact email'), T('intro_kicker', 'Intro line', 'Under the welcome animation.'),
-    T('footer_note', 'Footer note'), A('bag_note', 'Styling bag note', 'Shown at the top of the styling bag.')] },
+    T('footer_note', 'Footer note'), A('bag_note', 'Styling bag note', 'Shown at the top of the styling bag.'),
+    A('ticker', 'Scrolling band', 'The big moving words under the runway. One phrase per line; leave empty to hide it.'),
+    T('instagram', 'Instagram link', 'Full link starting with https://. Social links show in the footer once filled in.'),
+    T('tiktok', 'TikTok link'), T('x', 'X (Twitter) link'), T('youtube', 'YouTube link'), T('whatsapp', 'WhatsApp link', 'e.g. https://wa.me/233XXXXXXXXX')] },
   runway: { title: 'Try the Look', about: 'The runway heading.', fields: [T('title', 'Heading'), T('sub', 'Subheading', '{count} is replaced by the number of looks.')] },
   shop: { title: 'The Collection', about: 'Heading above the shop grid.', fields: [T('kicker', 'Small label'), T('title', 'Heading'), A('sub', 'Intro')] },
   story: { title: 'Armour of God', about: 'The artwork story and its featured piece.', fields: [

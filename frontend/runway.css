@@ -48,8 +48,10 @@ button:focus-visible, a:focus-visible { outline: 2px solid #151413; outline-offs
   letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap;
 }
 .site-header nav { display: flex; gap: 28px; font-size: 14px; font-weight: 600; font-family: Inter, Helvetica, Arial, sans-serif; }
-.site-header nav a { padding: 12px 0; }
-.site-header nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.site-header nav a { padding: 12px 0; position: relative; }
+/* underline that draws in from the left */
+.site-header nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 2px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s cubic-bezier(.2, .7, .2, 1); }
+.site-header nav a:hover::after, .site-header nav a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 #open-bag {
   display: flex; align-items: center; justify-content: center; gap: 5px;
   background: none; border: 0; min-width: 44px; min-height: 44px; cursor: pointer; padding: 0;

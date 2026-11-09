@@ -115,8 +115,9 @@
 .lk-story-meta { margin: 0 0 16px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 
 /* ---------------- Lookbook ---------------- */
-.lk-looks { columns: 3; column-gap: 16px; }
-.lk-look { break-inside: avoid; margin-bottom: 16px !important; }
+/* row-by-row grid, so the numbered captions read 01, 02, 03 across */
+.lk-looks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 16px; align-items: start; }
+.lk-look { margin: 0 !important; }
 .lk-look-btn { display: block; width: 100%; padding: 0; border: 0; background: #f4f4f4; cursor: zoom-in; overflow: hidden; }
 .lk-look-btn img { transition: transform .8s cubic-bezier(.2, .7, .2, 1); }
 .lk-look-btn:hover img { transform: scale(1.03); }
@@ -139,18 +140,34 @@
 
 /* ---------------- Footer ---------------- */
 .lk-foot {
-  max-width: 1440px;
-  margin: 120px auto 0;
-  padding: 40px 40px 48px;
-  border-top: 1px solid #e4e4e4;
-  color: #151413;
+  margin-top: 140px; position: relative;
+  background: #0e0e0e; color: #f3eee2;
   font-family: Helvetica, Arial, sans-serif;
 }
-.lk-foot-top { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-.lk-foot nav { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 13px; }
-.lk-foot nav a { color: inherit; text-decoration: none; }
-.lk-foot nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.lk-foot-note { margin: 28px 0 0; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #66625c; }
+/* a stripe of the product colours along the top edge */
+.lk-foot::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px;
+  background: linear-gradient(90deg, var(--lk-red) 0 20%, var(--lk-flame) 20% 40%, var(--lk-gold) 40% 60%, var(--lk-green) 60% 80%, var(--lk-pink) 80%);
+}
+.lk-foot-in { max-width: 1440px; margin: 0 auto; padding: 64px 40px 36px; }
+.lk-foot-top { display: flex; align-items: flex-start; gap: 48px 72px; flex-wrap: wrap; }
+.lk-foot-col { display: flex; flex-direction: column; gap: 14px; }
+.lk-foot-label { margin: 0; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgb(243 238 226 / .5); }
+.lk-foot nav { display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.lk-foot a { color: inherit; text-decoration: none; }
+.lk-foot nav a, .lk-foot-mail { width: fit-content; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .5s cubic-bezier(.2, .7, .2, 1); padding-bottom: 2px; }
+.lk-foot nav a:hover, .lk-foot-mail:hover { background-size: 100% 1px; }
+.lk-foot-mail { font-size: 15px; }
+.lk-foot-top-link { margin-left: auto; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; border: 1px solid rgb(243 238 226 / .3); border-radius: 999px; padding: 12px 18px; transition: background .3s, color .3s; }
+.lk-foot-top-link:hover { background: #f3eee2; color: #0e0e0e; }
+/* the giant wordmark */
+.lk-foot-mark {
+  margin: 72px 0 0; font-size: clamp(54px, 13.4vw, 196px); font-weight: 700; line-height: .82;
+  letter-spacing: -.055em; text-transform: uppercase; white-space: nowrap; text-align: center;
+  background: linear-gradient(180deg, #f3eee2 30%, rgb(243 238 226 / .35));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.lk-foot-note { margin: 28px 0 0; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: rgb(243 238 226 / .5); }
 
 /* ---------------- Zoom ---------------- */
 .lk-zoom {
@@ -196,15 +213,20 @@
   .lk-card .lk-btn { height: 42px; padding: 0 10px; font-size: 12px; }
   .lk-verse { font-size: 18px; }
   .lk-story-shirt img { width: 110px; }
-  .lk-looks { columns: 2; column-gap: 10px; }
-  .lk-look { margin-bottom: 10px !important; }
+  .lk-looks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; }
+  .lk-marquee { padding: 18px 0; }
   .lk-club-row { gap: 10px; }
   .lk-comm { grid-template-columns: 1fr; grid-template-rows: auto; gap: 10px; }
   .lk-comm-a { grid-row: auto; }
   .lk-comm-b img, .lk-comm-c img { aspect-ratio: 1290 / 1000; }
-  .lk-foot { margin-top: 88px; padding: 32px 16px 40px; }
+  .lk-foot { margin-top: 96px; }
+  .lk-foot-in { padding: 48px 16px 28px; }
+  .lk-foot-top { gap: 36px 48px; }
+  .lk-foot-top-link { margin-left: 0; }
+  .lk-foot-mark { margin-top: 48px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .lk-marquee-track { animation: none; }
   .lk-reveal { opacity: 1; transform: none; transition: none; }
   .lk-card-media img, .lk-look-btn img { transition: none; }
 }
@@ -247,3 +269,84 @@
 
 /* The Collection kicker in College red */
 .lk-shop .lk-kicker { color: var(--lk-red-text); }
+
+/* =========================================================================
+   Editorial touches
+   ========================================================================= */
+
+/* Scrolling type band under the runway */
+.lk-marquee {
+  overflow: hidden; padding: 30px 0; margin-top: 8px;
+  border-top: 1px solid #151413; border-bottom: 1px solid #151413;
+  font-family: Helvetica, Arial, sans-serif; color: #151413;
+}
+.lk-marquee-track { display: flex; width: max-content; animation: lk-marquee 38s linear infinite; }
+.lk-marquee:hover .lk-marquee-track { animation-play-state: paused; }
+.lk-marquee-set { display: flex; align-items: center; flex: none; }
+.lk-mq-word { font-size: clamp(44px, 7vw, 104px); font-weight: 700; line-height: 1; letter-spacing: -.04em; text-transform: uppercase; white-space: nowrap; padding: 0 .28em; }
+.lk-mq-word.is-outline { color: transparent; -webkit-text-stroke: 1.5px #151413; }
+.lk-mq-star { font-size: clamp(26px, 3.4vw, 50px); line-height: 1; }
+.lk-mq-star--red { color: var(--lk-red); } .lk-mq-star--gold { color: var(--lk-gold); } .lk-mq-star--green { color: var(--lk-green); }
+.lk-mq-star--pink { color: var(--lk-pink); } .lk-mq-star--flame { color: var(--lk-flame); }
+@keyframes lk-marquee { to { transform: translateX(-50%); } }
+
+/* Numbered section labels: 01 — The Collection */
+main { counter-reset: lk-sec; }
+.lk-sec { counter-increment: lk-sec; }
+.lk-sec .lk-kicker { display: flex; align-items: center; gap: 10px; }
+.lk-sec .lk-kicker::before { content: counter(lk-sec, decimal-leading-zero); font-variant-numeric: tabular-nums; }
+.lk-sec .lk-kicker::before { padding-right: 10px; border-right: 1px solid currentColor; }
+
+/* Bigger, tighter headings */
+.lk-title { font-size: clamp(38px, 4.4vw, 64px); letter-spacing: -.035em; }
+
+/* The verse in an italic serif */
+.lk-verse {
+  font-family: "Bodoni 72", Didot, "Bodoni MT", "Playfair Display", Georgia, serif;
+  font-style: italic; font-size: clamp(24px, 2.4vw, 34px); line-height: 1.22; letter-spacing: -.005em;
+  border-left-width: 3px; padding-left: 22px;
+}
+
+/* Shop cards: a bar in the line's colour slides in on hover */
+.lk-card-media::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; z-index: 2;
+  background: var(--tone); transform: scaleX(0); transform-origin: left; transition: transform .6s cubic-bezier(.2, .7, .2, 1);
+}
+.lk-card:hover .lk-card-media::after, .lk-card:focus-within .lk-card-media::after { transform: scaleX(1); }
+.lk-card-name { font-size: 14px; }
+
+/* Lookbook: numbered captions, photos darken slightly with a caption lift on hover */
+.lk-looks { counter-reset: lk-look; }
+.lk-look { counter-increment: lk-look; }
+.lk-look figcaption { display: flex; gap: 10px; }
+.lk-look figcaption::before { content: counter(lk-look, decimal-leading-zero); color: #151413; }
+.lk-look-btn { position: relative; }
+.lk-look-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgb(0 0 0 / .28)); opacity: 0; transition: opacity .5s; pointer-events: none; }
+.lk-look-btn:hover::after { opacity: 1; }
+@media (min-width: 750px) {
+  /* offset the middle column for a magazine-style stagger */
+  .lk-look:nth-child(3n + 2) { transform: translateY(56px); }
+  .lk-looks { padding-bottom: 56px; }
+}
+
+/* Community photos: slow zoom on hover */
+.lk-comm img { transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.lk-comm figure:hover img { transform: scale(1.04); }
+
+/* Thin reading-progress line in the product colours (where the browser supports it) */
+.lk-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  .lk-progress {
+    display: block; position: fixed; left: 0; right: 0; top: 0; height: 3px; z-index: 60; pointer-events: none;
+    background: linear-gradient(90deg, var(--lk-red), var(--lk-flame), var(--lk-gold), var(--lk-green), var(--lk-pink));
+    transform-origin: left; transform: scaleX(0);
+    animation: lk-progress linear both; animation-timeline: scroll(root);
+  }
+  .intro-open .lk-progress { display: none; }
+}
+@keyframes lk-progress { to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lk-look:nth-child(3n + 2) { transform: none; }
+  .lk-comm img { transition: none; }
+}
