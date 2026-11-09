@@ -184,3 +184,4 @@ table.t { width: 100%; border-collapse: collapse; background: #fff; border: 1px 
   .item { grid-template-columns: auto 48px 1fr; }
   .item > :last-child { grid-column: 2 / -1; }
 }
+.nav a[aria-current=page] .dot { box-shadow: 0 0 0 1.5px #fff; }
