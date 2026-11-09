@@ -28,7 +28,7 @@
     'popup-display': '#0e1015',
   };
   const LINES = { graphic: 'Graphic', shirts: 'Shirt', stadium: 'Stadium set', club: 'Girls’ Club', caps: 'Cap' };
-  const ORDER = ['armour-shirt', 'fallen-shirt-black', 'fallen-longsleeve', 'fallen-tee', 'messiah-tee', 'gothic-tee-black', 'gothic-tee-white',
+  const ORDER = ['armour-shirt', 'armour-shirt-black', 'fallen-shirt-black', 'fallen-longsleeve', 'fallen-tee', 'messiah-tee', 'gothic-tee-black', 'gothic-tee-white',
     'college-tee-white', 'college-tee-black', 'lord-knows-joggers', 'salvation-joggers',
     'feather-shirt-black', 'feather-shirt-white', 'signature-shirt',
     'club-tee-green', 'club-tee-pink', 'raglan-crop', 'club-trucker', 'red-trucker', 'classic-trucker'];

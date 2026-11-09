@@ -28,7 +28,8 @@
     'red-trucker': { name: 'Red Trucker Cap', meta: 'Red / black', img: W('red-trucker-cap-detail'), w: 720, h: 889, sizes: ONE_SIZE, price: null, gallery: ['red-trucker-cap-model', 'red-trucker-cap-detail'], line: 'caps' },
     // ---- graphic shirts & tees
     'armour-shirt': { name: 'Armour of God Shirt', meta: 'White · Back print', img: W('armour-of-god-shirt'), w: 720, h: 894, sizes: APPAREL, price: null, gallery: ['armour-of-god-shirt', 'armour-of-god-artwork-hd'], line: 'graphic' },
-    'fallen-shirt-black': { name: 'Fallen Angel Shirt', meta: 'Black · Front & back', img: W('fallen-angel-shirt-black-back'), w: 720, h: 732, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-black-back', 'fallen-angel-shirt-black'], line: 'graphic' },
+    'armour-shirt-black': { name: 'Armour of God Shirt', meta: 'Black · Front & back', img: W('fallen-angel-shirt-black'), w: 720, h: 433, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-black', 'armour-of-god-artwork-hd'], line: 'graphic' },
+    'fallen-shirt-black': { name: 'Fallen Angel Shirt', meta: 'Black · Back print', img: W('fallen-angel-shirt-black-back'), w: 720, h: 732, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-black-back'], line: 'graphic' },
     'fallen-longsleeve': { name: 'Fallen Angel Long Sleeve', meta: 'White · Back print', img: W('fallen-angel-shirt-white-long-sleeve'), w: 720, h: 740, sizes: APPAREL, price: null, gallery: ['fallen-angel-shirt-white-long-sleeve'], line: 'graphic' },
     'fallen-tee': { name: 'Fallen Angel Tee', meta: 'White · Back print', img: W('fallen-angel-tee'), w: 720, h: 720, sizes: APPAREL, price: null, gallery: ['fallen-angel-tee'], line: 'graphic' },
     'messiah-tee': { name: 'Heart of the Messiah Tee', meta: 'White · Our Father print', img: W('heart-of-the-messiah-tee'), w: 720, h: 788, sizes: APPAREL, price: null, gallery: ['heart-of-the-messiah-tee'], line: 'graphic' },
@@ -71,6 +72,44 @@
       { id: 'lord-knows-joggers', pin: [22, 87] },
       { id: 'club-trucker' },
     ] },
+    // Looks 6-14 are AVIF cutouts. `rack: true` marks a garment display
+    // (shirts floating, no model), drawn without the floor shadow.
+    { name: 'Girls’ Club', img: 'look-6', ext: 'avif', items: [
+      { id: 'club-tee-green', pin: [50, 68] },
+      { id: 'club-trucker', pin: [22, 21] },
+    ] },
+    { name: 'Armour of God', img: 'look-7', ext: 'avif', rack: true, items: [
+      { id: 'armour-shirt-black', pin: [38, 30] },
+      { id: 'armour-shirt', pin: [60, 54] },
+    ] },
+    { name: 'Pretty in Pink', img: 'look-8', ext: 'avif', items: [
+      { id: 'club-tee-pink', pin: [57, 66] },
+    ] },
+    { name: 'Fallen Angel', img: 'look-9', ext: 'avif', rack: true, items: [
+      { id: 'fallen-shirt-black', pin: [40, 25] },
+      { id: 'fallen-longsleeve', pin: [64, 48] },
+      { id: 'fallen-tee', pin: [42, 73] },
+    ] },
+    { name: 'Monochrome', img: 'look-10', ext: 'avif', items: [
+      { id: 'raglan-crop', pin: [53, 61] },
+      { id: 'classic-trucker', pin: [47, 19] },
+    ] },
+    { name: 'Heart of the Messiah', img: 'look-11', ext: 'avif', rack: true, items: [
+      { id: 'messiah-tee', pin: [50, 48] },
+    ] },
+    { name: 'Front Row', img: 'look-12', ext: 'avif', items: [
+      { id: 'college-tee-white', pin: [47, 63] },
+      { id: 'lord-knows-joggers', pin: [18, 84] },
+    ] },
+    { name: 'Gothic', img: 'look-13', ext: 'avif', rack: true, items: [
+      { id: 'gothic-tee-black', pin: [43, 35] },
+      { id: 'gothic-tee-white', pin: [57, 63] },
+    ] },
+    { name: 'Sunday Best', img: 'look-14', ext: 'avif', rack: true, items: [
+      { id: 'feather-shirt-black', pin: [38, 28] },
+      { id: 'signature-shirt', pin: [63, 48] },
+      { id: 'feather-shirt-white', pin: [42, 72] },
+    ] },
   ];
 
   const VARIANTS = {};
@@ -95,7 +134,7 @@
   })();
   const hasPrice = (pid) => typeof PRODUCTS[pid].price === 'number';
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const lookSrc = (look, w) => `${IMG}runway/${look.img}-${w}.webp`;
+  const lookSrc = (look, w) => `${IMG}runway/${look.img}-${w}.${look.ext || 'webp'}`;
 
   const ICONS = {
     plus: '<svg class="rw__i-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.4" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>',
@@ -285,14 +324,14 @@
       const bodies = Array.from({ length: N }, (_, a) => {
         const l = look(a);
         return `<div class="rw__model" data-rw-model data-index="${a}" aria-hidden="true">
-          <span class="rw__shadow"></span>
+          ${l.rack ? '' : '<span class="rw__shadow"></span>'}
           <div class="rw__figure" style="--rw-ar:0.5625"><div class="rw__art">${img(l, a < n ? 'loading="eager"' : 'loading="lazy"')}<button type="button" class="rw__hit" data-rw-go="${a}" aria-label="Look ${a % n + 1}: ${esc(l.name)}" tabindex="-1"></button></div></div>
         </div>`;
       }).join('');
 
       const heroes = LOOKS.map((l, i) => `<div class="rw__hero${i === 0 ? ' is-on' : ''}" data-rw-hero data-index="${i}" data-name="${esc(l.name)}" data-label="Look ${i + 1}: ${esc(l.name)}" data-probe="${lookSrc(l, 640)}" aria-hidden="${i !== 0}">
           <div class="rw__morph">
-            <span class="rw__shadow"></span>
+            ${l.rack ? '' : '<span class="rw__shadow"></span>'}
             <div class="rw__figure" style="--rw-ar:0.5625"><div class="rw__art">${img(l, 'loading="eager"')}<button type="button" class="rw__zoom" data-rw-zoom aria-label="View look: ${esc(l.name)}" tabindex="-1"></button><div class="rw__pins">${this.pinsHTML(l, -1)}</div></div></div>
           </div>
         </div>`).join('');
@@ -310,7 +349,7 @@
               <div class="rw__head">
                 <div class="rw__intro">
                   <h2 class="rw__title">Try the Look.</h2>
-                  <p class="rw__sub">Five looks, styled head to toe. Tap a pin to see the piece.</p>
+                  <p class="rw__sub">${n} looks, styled head to toe. Tap a pin to see the piece.</p>
                 </div>
                 <span class="rw__sr" aria-live="polite" aria-atomic="true" data-rw-live></span>
               </div>
@@ -358,7 +397,8 @@
     }
 
     panelHTML(look, i) {
-      const pieces = `${look.items.length} pieces`;
+      const one = look.items.length === 1;
+      const pieces = `${look.items.length} piece${one ? '' : 's'}`;
       const priced = look.items.every((it) => hasPrice(it.id));
       const full = priced ? look.items.reduce((s, it) => s + PRODUCTS[it.id].price, 0) : null;
       const bundle = priced ? Math.round(full * (1 - BUNDLE_SAVING) * 100) / 100 : null;
@@ -407,7 +447,7 @@
             <div class="rw__bundle-row">
               <div class="rw__bundle-copy">
                 <span class="rw__bundle-title">Complete the look</span>
-                <span class="rw__bundle-note">${priced ? `Bundle all ${look.items.length} and save ${Math.round(BUNDLE_SAVING * 100)}%` : `All ${look.items.length} pieces, saved together`}</span>
+                <span class="rw__bundle-note">${priced ? (one ? 'The full look' : `Bundle all ${look.items.length} and save ${Math.round(BUNDLE_SAVING * 100)}%`) : (one ? 'The full look, saved together' : `All ${look.items.length} pieces, saved together`)}</span>
               </div>
               ${priced ? `<div class="rw__bundle-price"><s>${money(full)}</s><strong>${money(bundle)}</strong></div>` : ''}
             </div>
