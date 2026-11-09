@@ -137,11 +137,11 @@
   const lookSrc = (look, w) => `${IMG}runway/${look.img}-${w}.${look.ext || 'webp'}`;
 
   const ICONS = {
-    plus: '<svg class="rw__i-plus" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.4" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>',
-    check: '<svg class="rw__i-check" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.6" aria-hidden="true"><path d="M4.5 12.5l5 5L19.5 7"/></svg>',
+    plus: '<svg class="rw__i-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>',
+    check: '<svg class="rw__i-check" width="16" height="16" viewBox="0 0 24 24" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.5l5 5L19.5 7"/></svg>',
     spin: '<svg class="rw__i-spin" width="18" height="18" viewBox="0 0 24 24" stroke-width="1.6" aria-hidden="true"><path d="M12 3a9 9 0 1 1-9 9"/></svg>',
-    arrowR: '<svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h24M19 1l6 6-6 6"/></svg>',
-    arrowL: '<svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M25 7H1M7 1L1 7l6 6"/></svg>',
+    arrowR: '<svg width="26" height="14" viewBox="0 0 26 14" fill="currentColor" aria-hidden="true"><path d="M1 5.9h16.6V1.4L25.4 7l-7.8 5.6V8.1H1z"/></svg>',
+    arrowL: '<svg width="26" height="14" viewBox="0 0 26 14" fill="currentColor" aria-hidden="true"><path d="M25 5.9H8.4V1.4L.6 7l7.8 5.6V8.1H25z"/></svg>',
     play: '<svg class="rw__i-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg>',
     pause: '<svg class="rw__i-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.5 4.5h3.5v15H6.5zM14 4.5h3.5v15H14z"/></svg>',
   };
@@ -455,7 +455,7 @@
               <span class="rw__cta-add">Add full look to bag</span>
               <span class="rw__cta-m">Add full look${priced ? ` — ${money(bundle)}` : ''}</span>
               <span class="rw__cta-done">Full look in your bag</span>
-              <svg class="rw__cta-arrow" width="22" height="12" viewBox="0 0 26 14" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 7h24M19 1l6 6-6 6"/></svg>
+              <svg class="rw__cta-arrow" width="22" height="12" viewBox="0 0 26 14" aria-hidden="true"><path d="M1 5.9h16.6V1.4L25.4 7l-7.8 5.6V8.1H1z"/></svg>
               <svg class="rw__cta-spin" width="16" height="16" viewBox="0 0 24 24" stroke-width="1.8" aria-hidden="true"><path d="M12 3a9 9 0 1 1-9 9"/></svg>
             </button>
           </div>
