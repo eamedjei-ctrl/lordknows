@@ -9,7 +9,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/armour-of-god-shirt-720.webp",
-    "1400": "/assets/images/web/armour-of-god-shirt-1400.webp"
+    "1400": "/assets/images/armour-of-god-shirt.jpeg"
    }
   },
   {
@@ -32,7 +32,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/armour-of-god-artwork-hd-720.webp",
-    "1400": "/assets/images/web/armour-of-god-artwork-hd-1400.webp"
+    "1400": "/assets/images/armour-of-god-artwork-hd.jpg"
    }
   },
   {
@@ -44,7 +44,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/fallen-angel-shirt-black-720.webp",
-    "1400": "/assets/images/web/fallen-angel-shirt-black-1400.webp"
+    "1400": "/assets/images/fallen-angel-shirt-black.jpeg"
    }
   },
   {
@@ -67,7 +67,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/fallen-angel-shirt-black-back-720.webp",
-    "1400": "/assets/images/web/fallen-angel-shirt-black-back-1400.webp"
+    "1400": "/assets/images/fallen-angel-shirt-black-back.jpeg"
    }
   },
   {
@@ -90,7 +90,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/fallen-angel-shirt-white-long-sleeve-720.webp",
-    "1400": "/assets/images/web/fallen-angel-shirt-white-long-sleeve-1400.webp"
+    "1400": "/assets/images/fallen-angel-shirt-white-long-sleeve.jpeg"
    }
   },
   {
@@ -113,7 +113,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/fallen-angel-tee-720.webp",
-    "1400": "/assets/images/web/fallen-angel-tee-1400.webp"
+    "1400": "/assets/images/fallen-angel-tee.jpeg"
    }
   },
   {
@@ -136,7 +136,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/heart-of-the-messiah-tee-720.webp",
-    "1400": "/assets/images/web/heart-of-the-messiah-tee-1400.webp"
+    "1400": "/assets/images/heart-of-the-messiah-tee.jpeg"
    }
   },
   {
@@ -159,7 +159,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/cross-graphic-tee-black-720.webp",
-    "1400": "/assets/images/web/cross-graphic-tee-black-1400.webp"
+    "1400": "/assets/images/cross-graphic-tee-black.jpeg"
    }
   },
   {
@@ -182,7 +182,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/cross-graphic-tee-white-720.webp",
-    "1400": "/assets/images/web/cross-graphic-tee-white-1400.webp"
+    "1400": "/assets/images/cross-graphic-tee-white.jpeg"
    }
   },
   {
@@ -227,7 +227,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/college-tee-720.webp",
-    "1400": "/assets/images/web/college-tee-1400.webp"
+    "1400": "/assets/images/college-tee.jpeg"
    }
   },
   {
@@ -239,7 +239,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/stadium-friends-720.webp",
-    "1400": "/assets/images/web/stadium-friends-1400.webp"
+    "1400": "/assets/images/stadium-friends.jpeg"
    }
   },
   {
@@ -273,7 +273,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/tracksuit-stadium-720.webp",
-    "1400": "/assets/images/web/tracksuit-stadium-1400.webp"
+    "1400": "/assets/images/tracksuit-stadium.jpeg"
    }
   },
   {
@@ -285,7 +285,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/black-set-720.webp",
-    "1400": "/assets/images/web/black-set-1400.webp"
+    "1400": "/assets/images/black-set.jpeg"
    }
   },
   {
@@ -319,7 +319,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/stadium-trio-720.webp",
-    "1400": "/assets/images/web/stadium-trio-1400.webp"
+    "1400": "/assets/images/stadium-trio.jpeg"
    }
   },
   {
@@ -353,7 +353,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/set-front-back-720.webp",
-    "1400": "/assets/images/web/set-front-back-1400.webp"
+    "1400": "/assets/images/set-front-back.jpeg"
    }
   },
   {
@@ -365,7 +365,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/feather-button-shirt-720.webp",
-    "1400": "/assets/images/web/feather-button-shirt-1400.webp"
+    "1400": "/assets/images/feather-button-shirt.jpeg"
    }
   },
   {
@@ -388,7 +388,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/feather-shirt-detail-720.webp",
-    "1400": "/assets/images/web/feather-shirt-detail-1400.webp"
+    "1400": "/assets/images/feather-shirt-detail.jpeg"
    }
   },
   {
@@ -411,7 +411,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/signature-shirt-720.webp",
-    "1400": "/assets/images/web/signature-shirt-1400.webp"
+    "1400": "/assets/images/signature-shirt.jpeg"
    }
   },
   {
@@ -434,7 +434,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/girls-club-set-720.webp",
-    "1400": "/assets/images/web/girls-club-set-1400.webp"
+    "1400": "/assets/images/girls-club-set.jpeg"
    }
   },
   {
@@ -457,7 +457,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/girls-club-trucker-720.webp",
-    "1400": "/assets/images/web/girls-club-trucker-1400.webp"
+    "1400": "/assets/images/girls-club-trucker.jpeg"
    }
   },
   {
@@ -469,7 +469,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/girls-club-tee-720.webp",
-    "1400": "/assets/images/web/girls-club-tee-1400.webp"
+    "1400": "/assets/images/girls-club-tee.jpeg"
    }
   },
   {
@@ -492,7 +492,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/raglan-tee-720.webp",
-    "1400": "/assets/images/web/raglan-tee-1400.webp"
+    "1400": "/assets/images/raglan-tee.jpeg"
    }
   },
   {
@@ -537,7 +537,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/red-trucker-cap-detail-720.webp",
-    "1400": "/assets/images/web/red-trucker-cap-detail-1400.webp"
+    "1400": "/assets/images/red-trucker-cap-detail.jpeg"
    }
   },
   {
@@ -560,7 +560,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/red-trucker-cap-model-720.webp",
-    "1400": "/assets/images/web/red-trucker-cap-model-1400.webp"
+    "1400": "/assets/images/red-trucker-cap-model.jpeg"
    }
   },
   {
@@ -594,7 +594,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/classic-trucker-cap-720.webp",
-    "1400": "/assets/images/web/classic-trucker-cap-1400.webp"
+    "1400": "/assets/images/classic-trucker-cap.jpeg"
    }
   },
   {
@@ -606,7 +606,7 @@
    "fit": "contain",
    "variants": {
     "720": "/assets/images/web/popup-display-720.webp",
-    "1400": "/assets/images/web/popup-display-1400.webp"
+    "1400": "/assets/images/popup-display.jpeg"
    }
   },
   {
@@ -786,7 +786,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/popup-community-720.webp",
-    "1400": "/assets/images/web/popup-community-1400.webp"
+    "1400": "/assets/images/popup-community.jpeg"
    }
   },
   {
@@ -798,7 +798,7 @@
    "fit": "cover",
    "variants": {
     "720": "/assets/images/web/friends-at-event-720.webp",
-    "1400": "/assets/images/web/friends-at-event-1400.webp"
+    "1400": "/assets/images/friends-at-event.jpeg"
    }
   }
  ],

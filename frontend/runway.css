@@ -25,7 +25,7 @@
 html, body {
   margin: 0; padding: 0; max-width: 100%;
   font-family: Helvetica, Arial, sans-serif;
-  color: #151413; background: #fff;
+  color: #151413; background: var(--lk-cream);
 }
 body { overflow-x: hidden; }
 button, input, select { font: inherit; }
@@ -39,7 +39,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #151413; outline-offs
 .site-header {
   height: 88px; padding: 0 40px;
   display: flex; align-items: center; gap: 32px;
-  border-bottom: 1px solid #e4e4e4; background: #fff;
+  border-bottom: 1px solid rgb(21 20 19 / .12); background: var(--lk-cream);
   position: relative; z-index: 50;
 }
 .brand { margin-right: auto; display: inline-flex; align-items: center; height: 24px; }
@@ -96,9 +96,9 @@ runway-section[data-tone="gold"]  { --rw-accent: var(--lk-gold);  --rw-on-accent
 
 /* ---------- Section tokens ---------- */
 runway-section {
-  --rw-c-stage: #ffffff; --rw-c-panel: #ffffff; --rw-c-text: #151413; --rw-c-muted: #66625c;
+  --rw-c-stage: #f3eee2; --rw-c-panel: #f3eee2; --rw-c-text: #151413; --rw-c-muted: #57524b;
   --rw-c-accent: #0e0e0e; --rw-c-on-accent: #ffffff; --rw-c-line: #c8c8c8; --rw-card: #DFDFDF;
-  --rw-hf: var(--font-heading--family, inherit); --rw-hw: 400;
+  --rw-hf: var(--font-heading--family, inherit); --rw-hw: 700;
   --rw-h-d: 46px; --rw-h-m: 24px; --rw-sub-d: 12px; --rw-sub-m: 12px;
   --rw-eyebrow-d: 11px; --rw-eyebrow-m: 10px; --rw-label-d: 10px; --rw-label-m: 9px;
   --rw-chip-d: 17px; --rw-chip-m: 18px; --rw-ph-d: 18px; --rw-ph-m: 16px;
@@ -149,14 +149,14 @@ runway-section {
 .rw__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 44px 56px 0; position: relative; z-index: 5; }
 .rw__intro { display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
 .rw__title { margin: 0; font-family: var(--rw-hf); font-weight: var(--rw-hw); font-size: var(--rw-h); line-height: 1; letter-spacing: -.02em; color: var(--rw-head); }
-.rw__sub { margin: 0; font-size: var(--rw-sub); line-height: 1.55; color: var(--rw-muted); max-width: 46ch; }
+.rw__sub { margin: 0; font-size: calc(var(--rw-sub) + 1px); font-weight: 500; line-height: 1.55; color: #3d3a35; max-width: 46ch; }
 
 /* ---------- Stage ---------- */
 .rw__stage {
   position: relative; flex: 1 1 auto; min-height: 0;
   touch-action: pan-y; user-select: none; -webkit-user-select: none;
   cursor: grab; outline: none; overflow: hidden; z-index: 0;
-  background: radial-gradient(60% 52% at 50% 58%, color-mix(in srgb, var(--rw-accent) 13%, #fff), #fff 100%);
+  background: radial-gradient(60% 52% at 50% 58%, color-mix(in srgb, var(--rw-accent) 13%, var(--lk-cream)), var(--lk-cream) 100%);
 }
 runway-section.is-dragging .rw__stage { cursor: grabbing; }
 .rw__stage:focus-visible { box-shadow: inset 0 0 0 2px var(--rw-accent); }
@@ -307,9 +307,9 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
 @keyframes rw-swing { 0% { transform: rotate(-16deg); } 25% { transform: rotate(11deg); } 45% { transform: rotate(-7deg); } 65% { transform: rotate(4deg); } 82% { transform: rotate(-2deg); } 100% { transform: rotate(0); } }
 
 .rw__info { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-.rw__type { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--rw-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rw__type { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--rw-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rw__name {
-  font-size: var(--rw-pt-size); font-weight: 500; line-height: 1.3; align-self: flex-start;
+  font-size: var(--rw-pt-size); font-weight: 700; line-height: 1.3; align-self: flex-start;
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
   transition: background-size .7s var(--rw-ease);
 }
@@ -426,7 +426,7 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
 
 /* ---------- "View look" popup ---------- */
 .rw__lb { position: absolute; inset: 0; z-index: 1800; }
-.rw__lb-bg { position: absolute; inset: 0; background: rgb(255 255 255/.94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); opacity: 0; transition: opacity .5s var(--rw-ease); }
+.rw__lb-bg { position: absolute; inset: 0; background: rgb(243 238 226/.95); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); opacity: 0; transition: opacity .5s var(--rw-ease); }
 .rw__lb-stage { position: absolute; inset: 0; display: grid; place-items: end center; padding: 28px 24px 24px; }
 .rw__lb-fig { position: relative; height: 100%; aspect-ratio: .5625; opacity: 0; transform: translateY(24px) scale(.96); transition: opacity .6s var(--rw-ease), transform .9s var(--rw-ease); }
 .rw__lb-fig > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; pointer-events: none; }
@@ -487,7 +487,7 @@ runway-section.rw--js.is-revealed .rw__panel-head { transition-delay: .34s; }
 runway-section.rw--js.is-revealed .rw__stage, runway-section.rw--js.is-revealed .rw__panel, runway-section.rw--js.is-revealed .rw__controls { opacity: 1; }
 
 /* ---------- Styling bag dialog and toast ---------- */
-#bag-dialog { border: 1px solid #d9d9d9; background: #fff; color: #151413; padding: 24px; width: min(560px, calc(100vw - 32px)); max-height: 85dvh; overflow: auto; }
+#bag-dialog { border: 1px solid #d9d2c3; background: var(--lk-cream); color: #151413; padding: 24px; width: min(560px, calc(100vw - 32px)); max-height: 85dvh; overflow: auto; }
 #bag-dialog::backdrop { background: #0005; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
 .bag-heading { display: flex; justify-content: space-between; gap: 20px; }
 .bag-heading h2 { font-size: 25px; font-weight: 400; margin: 0; }
@@ -561,7 +561,7 @@ runway-section.rw--js.is-revealed .rw__stage, runway-section.rw--js.is-revealed 
   .rw__sheet-host.is-open { pointer-events: auto; }
   .rw__sheet-host.is-open .rw__sheet-bg { opacity: 1; }
   .rw__sheet-host .rw__picker {
-    position: absolute; left: 0; right: 0; bottom: 0; background: #fff;
+    position: absolute; left: 0; right: 0; bottom: 0; background: var(--lk-cream);
     padding: 22px 18px calc(22px + env(safe-area-inset-bottom));
     border-radius: var(--rw-bar-r) var(--rw-bar-r) 0 0; box-shadow: 0 -20px 50px -20px rgb(0 0 0/.35);
     animation: rw-sheet-in .55s var(--rw-ease-sheet);

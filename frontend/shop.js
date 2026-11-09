@@ -26,7 +26,7 @@
     const p = PRODUCTS[id];
     // no gallery photos yet: fall back to the product's own image
     const g = p.gallery?.length ? p.gallery : [{ sm: p.img, lg: p.img, fit: p.cutout ? 'contain' : 'cover' }];
-    const bg = (g[0] && g[0].bg) || '#f4f4f4';
+    const bg = (g[0] && g[0].bg) || '#ebe5d8';
     const one = p.sizes.length === 1;
     const pills = one ? '' : `<div class="lk-pills" role="group" aria-label="Size for ${esc(p.name)}">${p.sizes.map((s) =>
       `<button type="button" class="lk-pill" data-size="${esc(s)}" aria-pressed="false">${esc(s)}</button>`).join('')}</div>`;
@@ -106,17 +106,42 @@
       zimg.alt = b.querySelector('img').alt;
       zoom.showModal();
     }));
-    zoom.addEventListener('click', (e) => { if (e.target === zoom || e.target.closest('.lk-zoom-close') || e.target === zimg) zoom.close(); });
+    zoom.addEventListener('click', (e) => { if (e.target === zoom || e.target.closest('.lk-zoom-close') || e.target === zimg) softClose(zoom); });
+    zoom.addEventListener('cancel', (e) => { e.preventDefault(); softClose(zoom); });
   }
+
+  // ---- Photos fade in when they finish loading (no hard pop-in) ----
+  if (!reduceMotion) {
+    document.querySelectorAll('main img').forEach((im) => {
+      if (im.complete && im.naturalWidth) return;
+      im.addEventListener('load', () => im.classList.add('lk-img-in'), { once: true });
+    });
+  }
+
+  // ---- Close dialogs with a short fade instead of vanishing ----
+  const softClose = (d) => {
+    if (!d.open || d.classList.contains('is-closing')) return;
+    if (reduceMotion) { d.close(); return; }
+    d.classList.add('is-closing');
+    setTimeout(() => { d.classList.remove('is-closing'); d.close(); }, 260);
+  };
+  window.LordKnows.softClose = softClose;
 
   // ---- Sections fade up as they arrive ----
   if (!reduceMotion && 'IntersectionObserver' in window) {
     const els = document.querySelectorAll('.lk-head, .lk-card, .lk-look, .lk-club-fig, .lk-comm figure, .lk-story-art, .lk-story-text');
-    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      en.target.classList.add('is-in');
-      io.unobserve(en.target);
-    }), { rootMargin: '0px 0px -8% 0px' });
+    // Items arriving together fade up one after another (a short cascade).
+    const io = new IntersectionObserver((entries) => {
+      entries.filter((en) => en.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top || a.boundingClientRect.left - b.boundingClientRect.left)
+        .forEach((en, i) => {
+          const el = en.target;
+          el.style.transitionDelay = `${Math.min(i, 6) * 70}ms`;
+          el.classList.add('is-in');
+          io.unobserve(el);
+          setTimeout(() => { el.style.transitionDelay = ''; }, 1600);
+        });
+    }, { rootMargin: '0px 0px -8% 0px' });
     els.forEach((el) => { el.classList.add('lk-reveal'); io.observe(el); });
   }
 })();

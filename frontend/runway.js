@@ -122,10 +122,12 @@
       this.total = this.dialog.querySelector('#bag-total');
       this.exportBtn = this.dialog.querySelector('#export-bag');
       document.getElementById('open-bag')?.addEventListener('click', () => this.open());
-      this.dialog.querySelector('#close-bag')?.addEventListener('click', () => this.dialog.close());
+      const close = () => (window.LordKnows?.softClose || ((d) => d.close()))(this.dialog);
+      this.dialog.querySelector('#close-bag')?.addEventListener('click', close);
+      this.dialog.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
       this.dialog.addEventListener('click', (e) => {
         const r = this.dialog.getBoundingClientRect();
-        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) { this.dialog.close(); return; }
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) { close(); return; }
         const remove = e.target.closest('[data-bag-remove]');
         if (remove) Bag.remove(remove.dataset.bagRemove);
       });
@@ -792,13 +794,16 @@
       s.el.style.transform = `translate3d(${x.toFixed(2)}px, ${(-bottom).toFixed(2)}px, 0) translateX(-50%) scale(${scale.toFixed(4)})`;
       const o = op.toFixed(3);
       if (o !== s.o) { s.el.style.opacity = o; s.o = o; }
-      s.el.style.zIndex = z;
+      if (z !== s.z) { s.el.style.zIndex = z; s.z = z; }
       const vis = op < 0.01 ? 'hidden' : '';
       if (vis !== s.vis) { s.el.style.visibility = vis; s.vis = vis; }
       const pe = op < 0.5 ? 'none' : '';
       if (pe !== s.pe) { s.el.style.pointerEvents = pe; s.pe = pe; }
-      const bl = Math.round(blur * 10) / 10;
-      if (bl !== s.blur) { s.el.style.filter = bl > 0.05 ? `blur(${bl}px)` : ''; s.blur = bl; }
+      // Blur in 1.5px steps: a changed blur makes the browser redraw the whole
+      // figure, so it should change a few times per move, not every frame.
+      // Between steps the blurred figure is reused and only slides (cheap).
+      const bl = Math.round(blur / 1.5) * 1.5;
+      if (bl !== s.blur) { s.el.style.filter = bl > 0 ? `blur(${bl}px)` : ''; s.blur = bl; }
     }
 
     // ----- drag, swipe, trackpad -----
