@@ -56,6 +56,11 @@ button:focus-visible, a:focus-visible { outline: 2px solid #151413; outline-offs
 }
 #open-bag [data-cart-count] { font-size: 10px; }
 
+/* Until runway.js defines the element it is empty; reserve its space so the
+   sections below don't start inside the viewport and pull in their lazy
+   images on first paint. */
+runway-section:not(:defined) { display: block; min-height: 400vh; }
+
 /* ---------- Section tokens ---------- */
 runway-section {
   --rw-c-stage: #ffffff; --rw-c-panel: #ffffff; --rw-c-text: #151413; --rw-c-muted: #66625c;

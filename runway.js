@@ -114,6 +114,7 @@
 
   const VARIANTS = {};
   Object.entries(PRODUCTS).forEach(([pid, p]) => {
+    p.thumb = `${IMG}thumbs/${pid}.avif`; // 240px-wide AVIF for the small thumbnails
     p.variants = p.sizes.map((size) => {
       const id = `${pid}/${size}`;
       VARIANTS[id] = { id, pid, size };
@@ -239,7 +240,7 @@
           const size = v.size === 'One size' ? 'One size' : `Size ${v.size}`;
           const price = hasPrice(v.pid) ? ` · ${money(p.price)}` : '';
           return `<div class="bag-row">
-            <img src="${p.img}" alt="${esc(p.name)}">
+            <img src="${p.thumb}" alt="${esc(p.name)}" decoding="async">
             <div>
               <h3>${esc(p.name)}</h3>
               <p>${esc(size)} · Quantity ${e.quantity}${price}</p>
@@ -311,28 +312,62 @@
       this.measure();
       this.setIndex(0, true);
       this.observe();
+      this.hydrateLater();
       this.setupCursor();
       if (this.dataset.autoplay === 'true' && !reduceMotion) this.play(true);
+    }
+
+    // ----- image loading -----
+    // Looks near the start load straight away; every other look's images wait
+    // (data-src) until the visitor moves near them or the page is idle, so the
+    // first view isn't competing with 13 looks it can't see yet.
+    near(i) {
+      const d = Math.min(Math.abs(i), this.n - Math.abs(i));
+      return d <= 1;
+    }
+    srcAttrs(src, i, srcset) {
+      const a = srcset ? ` srcset="${srcset}"` : '';
+      return this.near(i)
+        ? `src="${src}"${a}`
+        : `data-look="${i}" data-src="${src}"${srcset ? ` data-srcset="${srcset}"` : ''}`;
+    }
+    hydrate(i, reach = 2) {
+      const want = new Set();
+      for (let d = -reach; d <= reach; d++) want.add(((i + d) % this.n + this.n) % this.n);
+      this.querySelectorAll('img[data-src]').forEach((im) => {
+        if (reach < this.n && !want.has(Number(im.dataset.look))) return;
+        if (im.dataset.srcset) im.srcset = im.dataset.srcset;
+        im.src = im.dataset.src;
+        im.removeAttribute('data-src');
+        im.removeAttribute('data-srcset');
+      });
+    }
+    hydrateLater() {
+      const all = () => this.hydrate(0, this.n);
+      const idle = () => (window.requestIdleCallback ? requestIdleCallback(all, { timeout: 4000 }) : setTimeout(all, 1500));
+      if (document.readyState === 'complete') idle(); else addEventListener('load', idle, { once: true });
     }
 
     // ----- markup -----
     render() {
       const { n, N } = this;
       const look = (i) => LOOKS[i % n];
-      const img = (l, extra = '') => `<img src="${lookSrc(l, 640)}" srcset="${lookSrc(l, 640)} 640w, ${lookSrc(l, 1080)} 1080w" sizes="(min-width: 1800px) 540px, (min-width: 750px) 420px, 320px" width="1080" height="1920" alt="${esc(l.name)}" decoding="async" draggable="false" data-model-image ${extra}>`;
+      // Only the first look and its neighbours get a real src now; the rest
+      // carry data-src and are filled in by hydrate() (see below).
+      const img = (l, extra = '') => `<img ${this.srcAttrs(lookSrc(l, 640), LOOKS.indexOf(l), `${lookSrc(l, 640)} 640w, ${lookSrc(l, 1080)} 1080w`)} sizes="(min-width: 1800px) 540px, (min-width: 750px) 420px, 320px" width="1080" height="1920" alt="${esc(l.name)}" decoding="async" draggable="false" data-model-image ${extra}>`;
 
       const bodies = Array.from({ length: N }, (_, a) => {
         const l = look(a);
         return `<div class="rw__model" data-rw-model data-index="${a}" aria-hidden="true">
           ${l.rack ? '' : '<span class="rw__shadow"></span>'}
-          <div class="rw__figure" style="--rw-ar:0.5625"><div class="rw__art">${img(l, a < n ? 'loading="eager"' : 'loading="lazy"')}<button type="button" class="rw__hit" data-rw-go="${a}" aria-label="Look ${a % n + 1}: ${esc(l.name)}" tabindex="-1"></button></div></div>
+          <div class="rw__figure" style="--rw-ar:0.5625"><div class="rw__art">${img(l)}<button type="button" class="rw__hit" data-rw-go="${a}" aria-label="Look ${a % n + 1}: ${esc(l.name)}" tabindex="-1"></button></div></div>
         </div>`;
       }).join('');
 
       const heroes = LOOKS.map((l, i) => `<div class="rw__hero${i === 0 ? ' is-on' : ''}" data-rw-hero data-index="${i}" data-name="${esc(l.name)}" data-label="Look ${i + 1}: ${esc(l.name)}" data-probe="${lookSrc(l, 640)}" aria-hidden="${i !== 0}">
           <div class="rw__morph">
             ${l.rack ? '' : '<span class="rw__shadow"></span>'}
-            <div class="rw__figure" style="--rw-ar:0.5625"><div class="rw__art">${img(l, 'loading="eager"')}<button type="button" class="rw__zoom" data-rw-zoom aria-label="View look: ${esc(l.name)}" tabindex="-1"></button><div class="rw__pins">${this.pinsHTML(l, -1)}</div></div></div>
+            <div class="rw__figure" style="--rw-ar:0.5625"><div class="rw__art">${img(l)}<button type="button" class="rw__zoom" data-rw-zoom aria-label="View look: ${esc(l.name)}" tabindex="-1"></button><div class="rw__pins">${this.pinsHTML(l, -1)}</div></div></div>
           </div>
         </div>`).join('');
 
@@ -414,7 +449,7 @@
         const picker = direct ? '' : `
           <div class="rw__picker" id="${key}-picker" data-rw-picker hidden>
             <div class="rw__picker-head">
-              <img src="${p.img}" alt="" class="${p.cutout ? 'is-cutout' : ''}" loading="lazy" decoding="async">
+              <img ${this.srcAttrs(p.thumb, i)} alt="" class="${p.cutout ? 'is-cutout' : ''}" decoding="async">
               <div><strong>${esc(p.name)}</strong><span>${esc(p.meta)}${hasPrice(it.id) ? ` · ${money(p.price)}` : ''}</span></div>
               <button type="button" class="rw__pick-close" data-rw-pick-close aria-label="Close size picker">×</button>
             </div>
@@ -428,7 +463,7 @@
           </div>`;
         return `<li class="rw__item" data-rw-card="${n}" data-pid="${it.id}" style="--i:${n}" data-title="${esc(p.name)}"${direct ? ` data-direct="1" data-selected="${esc(p.variants[0].id)}"` : ` data-selected="${esc(p.variants[0].id)}"`}>
             ${it.tag ? `<span class="rw__tag"><span class="rw__tag-text">${esc(it.tag)}</span></span>` : ''}
-            <a class="rw__media" href="${href}"${tryAttr} tabindex="-1" aria-hidden="true"><img src="${p.img}" width="400" height="${thumbH}" alt="" loading="lazy" decoding="async"><span class="rw__num">${n}</span></a>
+            <a class="rw__media" href="${href}"${tryAttr} tabindex="-1" aria-hidden="true"><img ${this.srcAttrs(p.thumb, i)} width="400" height="${thumbH}" alt="" decoding="async"><span class="rw__num">${n}</span></a>
             <div class="rw__info">
               <span class="rw__type">${esc(p.meta)}</span>
               <a class="rw__name" href="${href}"${tryAttr}>${esc(p.name)}</a>
@@ -620,6 +655,7 @@
       if (i === this.index && !silent) { this.updateRanks(); return; }
       const old = this.index;
       this.index = i;
+      this.hydrate(i);
       const look = LOOKS[i];
       if (!silent) {
         this.closePopup();
