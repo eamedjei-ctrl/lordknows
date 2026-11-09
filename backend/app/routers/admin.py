@@ -1,17 +1,17 @@
-"""Admin API: every change the CMS can make. All routes need the admin guard."""
+"""Admin API: every change the CMS can make. All routes need a signed-in admin."""
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Response, UploadFile, status
-from pydantic import ValidationError
-from sqlalchemy import func, or_, select
+from pydantic import BaseModel, Field, ValidationError
+from sqlalchemy import delete, func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from ..auth import require_admin
+from ..auth import check_new_password, hash_password, require_admin
 from ..content import BLOCKS, media_ids
 from ..db import get_db
 from ..media import BadImage, delete_files, save_upload
-from ..models import ContentBlock, Line, Look, LookItem, Media, Product, ProductImage
+from ..models import AdminSession, ContentBlock, Line, Look, LookItem, Media, Product, ProductImage, User
 from ..schemas import (LineIn, LineOut, LinePatch, LookIn, LookItemOut, LookOut, LookPatch, MediaOut,
                        MediaPatch, Order, ProductIn, ProductOut, ProductPatch)
 
@@ -317,3 +317,81 @@ def put_content(key: str, body: dict, db: DB):
 
 def _no_block(key: str):
     raise HTTPException(404, f"No section called {key!r}. Sections: {', '.join(BLOCKS)}")
+
+
+# =========================================================================== admin users
+class UserIn(BaseModel):
+    email: Annotated[str, Field(min_length=3, max_length=254, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+    name: Annotated[str, Field(max_length=120)] = ""
+    password: Annotated[str, Field(max_length=200)]
+
+
+class UserPatch(BaseModel):
+    name: Annotated[str, Field(max_length=120)] | None = None
+    is_active: bool | None = None
+    password: Annotated[str, Field(max_length=200)] | None = None
+
+
+def user_out(u: User) -> dict:
+    return {"id": u.id, "email": u.email, "name": u.name, "is_active": u.is_active,
+            "last_login_at": u.last_login_at, "created_at": u.created_at}
+
+
+@router.get("/users")
+def list_users(db: DB):
+    return [user_out(u) for u in db.scalars(select(User).order_by(User.id))]
+
+
+@router.post("/users", status_code=201)
+def create_user(body: UserIn, db: DB):
+    check_new_password(body.password)
+    u = User(email=body.email.strip().lower(), name=body.name.strip(), password_hash=hash_password(body.password))
+    db.add(u)
+    commit(db, "That email")
+    return user_out(u)
+
+
+@router.patch("/users/{user_id}")
+def update_user(user_id: int, body: UserPatch, db: DB, me: User = Depends(require_admin)):
+    u = get_or_404(db, User, user_id)
+    if body.is_active is False and u.id == me.id:
+        raise HTTPException(422, "You can't disable your own account.")
+    if body.name is not None:
+        u.name = body.name.strip()
+    if body.is_active is not None:
+        u.is_active = body.is_active
+    if body.password is not None:
+        check_new_password(body.password)
+        u.password_hash = hash_password(body.password)
+    if body.is_active is False or body.password is not None:
+        db.execute(delete(AdminSession).where(AdminSession.user_id == u.id))  # sign them out
+    db.commit()
+    return user_out(u)
+
+
+@router.delete("/users/{user_id}", status_code=204)
+def delete_user(user_id: int, db: DB, me: User = Depends(require_admin)):
+    u = get_or_404(db, User, user_id)
+    if u.id == me.id:
+        raise HTTPException(422, "You can't delete your own account.")
+    db.delete(u)
+    db.commit()
+    return Response(status_code=204)
+
+
+@router.get("/media-usage")
+def all_media_usage(db: DB):
+    """Which images are used where: {media_id: ["product x", "look y", ...]}."""
+    used: dict[int, list[str]] = {}
+    add = lambda mid, what: mid and used.setdefault(mid, []).append(what)  # noqa: E731
+    for p in db.scalars(select(Product)):
+        add(p.image_id, f"product {p.name}")
+        add(p.thumb_id, f"product {p.name} (thumbnail)")
+        for g in p.gallery:
+            add(g.media_id, f"product {p.name} (gallery)")
+    for lk in db.scalars(select(Look)):
+        add(lk.image_id, f"look {lk.name}")
+    for b in db.scalars(select(ContentBlock)):
+        for mid in media_ids(b.key, b.data):
+            add(mid, f"section {b.key}")
+    return used

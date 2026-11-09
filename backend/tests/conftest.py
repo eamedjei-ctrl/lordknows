@@ -7,7 +7,8 @@ import pytest
 os.environ["DATABASE_URL"] = os.environ.get(
     "TEST_DATABASE_URL", "postgresql://lordknows:lordknows@127.0.0.1:5433/lordknows_test")
 os.environ["MEDIA_ROOT"] = tempfile.mkdtemp(prefix="lk-media-")
-os.environ["ADMIN_TOKEN"] = "test-token"
+os.environ["ADMIN_EMAIL"] = "admin@example.com"
+os.environ["ADMIN_PASSWORD"] = "correct horse battery"
 
 from alembic import command  # noqa: E402
 from alembic.config import Config  # noqa: E402
@@ -24,7 +25,9 @@ def database():
         c.execute(text("drop schema public cascade; create schema public"))
     command.upgrade(Config(str(BACKEND_DIR / "alembic.ini")), "head")
     from app.seed import seed
+    from app.users import main as users
     assert seed()
+    assert users(["bootstrap"]) == 0
     yield
 
 
@@ -36,5 +39,7 @@ def client():
 
 @pytest.fixture()
 def admin(client):
-    client.headers["Authorization"] = "Bearer test-token"
+    r = client.post("/api/auth/login", json={"email": "admin@example.com", "password": "correct horse battery"})
+    assert r.status_code == 200, r.text
+    client.headers["X-CSRF-Token"] = r.json()["csrf"]
     return client

@@ -1,5 +1,6 @@
 # Coolify: create a "Docker Compose" resource from this repo. Coolify fills in
-# the SERVICE_* variables itself (database user/password, admin token, domain).
+# the SERVICE_* variables itself (database user/password, first admin password,
+# domain). Set ADMIN_EMAIL in Coolify before the first deploy.
 services:
   app:
     build: .
@@ -7,7 +8,8 @@ services:
     environment:
       - SERVICE_FQDN_APP_8000
       - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@db:5432/${POSTGRES_DB:-lordknows}
-      - ADMIN_TOKEN=${SERVICE_PASSWORD_64_ADMIN}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${SERVICE_PASSWORD_ADMIN}
       - MEDIA_ROOT=/data/media
     volumes:
       - lk-media:/data/media # uploaded images: persistent

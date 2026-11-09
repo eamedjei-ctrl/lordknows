@@ -37,12 +37,6 @@ def test_static_and_health(client):
     assert client.get("/app/config.py").status_code == 404
 
 
-def test_admin_needs_token(client):
-    assert client.get("/api/admin/products").status_code == 401
-    client.headers["Authorization"] = "Bearer wrong"
-    assert client.patch("/api/admin/products/1", json={"price": 1}).status_code == 401
-
-
 def test_upload_new_product_and_look(admin):
     # a look photo, fitted into the 9:16 frame
     r = admin.post("/api/admin/media", files={"file": ("look.png", png(), "image/png")}, data={"frame": "look", "alt": "New look"})

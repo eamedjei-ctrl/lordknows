@@ -16,9 +16,10 @@ class Settings(BaseSettings):
     media_root: Path = BACKEND_DIR / "media"
     # The static site (CSS, JS, fonts, built-in images).
     frontend_dir: Path = BACKEND_DIR.parent / "frontend"
-    # Temporary guard for the write API until the admin login is built.
-    # Empty = the admin API is switched off.
-    admin_token: str = ""
+    # First admin account, created on start if there are no users yet.
+    admin_email: str = ""
+    admin_password: str = ""
+    session_days: int = 14
     max_upload_mb: int = 25
 
     @field_validator("database_url")

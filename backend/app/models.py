@@ -7,6 +7,8 @@ product_images  a product's gallery photos, in order
 looks           the runway looks, each a 9:16 image
 look_items      the pieces in a look, with their pin position on the image
 content_blocks  editable page text and section images, one JSON document per section
+users           admin accounts (scrypt password hashes)
+sessions        signed-in admin browsers
 """
 from datetime import datetime
 from decimal import Decimal
@@ -123,3 +125,28 @@ class ContentBlock(Base):
     key: Mapped[str] = mapped_column(String(60), primary_key=True)
     data: Mapped[dict] = mapped_column(Json, default=dict)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class User(Timestamps, Base):
+    """Someone who can sign in to the admin."""
+    __tablename__ = "users"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String(254), unique=True)
+    name: Mapped[str] = mapped_column(String(120), default="")
+    password_hash: Mapped[str] = mapped_column(String(255))
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class AdminSession(Base):
+    """A signed-in browser. The cookie holds a random token; only its hash is stored."""
+    __tablename__ = "sessions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    token_hash: Mapped[str] = mapped_column(String(64), unique=True)
+    csrf: Mapped[str] = mapped_column(String(64))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    user_agent: Mapped[str] = mapped_column(String(300), default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    user: Mapped[User] = relationship(lazy="joined")
