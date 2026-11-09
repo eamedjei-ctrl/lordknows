@@ -1,8 +1,8 @@
 name: Deploy website to GitHub Pages
 
+# The site is hosted on Netlify. This GitHub Pages deploy only runs when
+# started by hand (Actions tab -> Run workflow).
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
