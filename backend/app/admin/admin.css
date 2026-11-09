@@ -172,16 +172,28 @@ table.t { width: 100%; border-collapse: collapse; background: #fff; border: 1px 
 
 @media (max-width: 900px) {
   .shell { grid-template-columns: 1fr; }
-  .side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 12px; gap: 6px; border-right: 0; border-bottom: 1px solid var(--line); }
+  /* compact top bar: brand + actions, then one swipeable row of sections */
+  .side { position: sticky; top: 0; z-index: 20; height: auto; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 10px; padding: 10px 12px 8px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .side .brand { padding: 0; font-size: 15px; }
   .side .brand-sub, .side-foot .muted { display: none; }
-  .nav { display: flex; flex-wrap: wrap; gap: 4px; width: 100%; }
-  .nav a { padding: 7px 10px; font-size: 13px; }
-  .side-foot { margin: 0; flex-direction: row; padding: 0; }
+  .side-foot { grid-column: 2; grid-row: 1; margin: 0; flex-direction: row; gap: 6px; padding: 0; }
+  .side-foot .btn--sm { height: 28px; padding: 0 10px; font-size: 11px; }
+  .nav { grid-column: 1 / -1; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin: 0 -12px; padding: 0 12px; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { flex: none; padding: 7px 11px; font-size: 13px; white-space: nowrap; }
   .main { padding: 20px 16px 80px; }
+  .head { margin-bottom: 16px; }
+  h1 { font-size: 24px; }
   .savebar { margin: 24px -16px -80px; padding: 12px 16px; }
   .editor, .media-side, .grid2 { grid-template-columns: 1fr; }
-  .stage-wrap { position: static; max-width: 360px; }
-  .item { grid-template-columns: auto 48px 1fr; }
-  .item > :last-child { grid-column: 2 / -1; }
+  .stage-wrap { position: static; }
+  .stage { width: min(72vw, 300px); }
+  .item { grid-template-columns: auto 48px 1fr auto; gap: 10px; padding: 10px; }
+  .item .badge { justify-self: end; }
+  .piece { grid-template-columns: 28px 1fr; }
+  .piece .acts { grid-column: 1 / -1; justify-content: flex-start; }
+  .media-side .panel { position: static; }
+  .t { display: block; overflow-x: auto; }
+}
 }
 .nav a[aria-current=page] .dot { box-shadow: 0 0 0 1.5px #fff; }
