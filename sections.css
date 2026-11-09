@@ -208,3 +208,48 @@
   .lk-reveal { opacity: 1; transform: none; transition: none; }
   .lk-card-media img, .lk-look-btn img { transition: none; }
 }
+
+/* ---------------- Product colours ----------------
+   Each line wears the colour its pieces carry (palette in runway.css):
+   Stadium = College red, Graphic = Fallen Angel scarlet, Shirts = feather
+   gold, Girls' Club = pink, Caps = Club green. */
+.lk-filter, .lk-card { --tone: var(--lk-ink); --tone-on: #fff; }
+[data-filter="stadium"], [data-line="stadium"] { --tone: var(--lk-red);   --tone-on: #fff; }
+[data-filter="graphic"], [data-line="graphic"] { --tone: var(--lk-flame); --tone-on: #fff; }
+[data-filter="shirts"],  [data-line="shirts"]  { --tone: var(--lk-gold);  --tone-on: var(--lk-ink); }
+[data-filter="club"],    [data-line="club"]    { --tone: var(--lk-pink);  --tone-on: var(--lk-ink); }
+[data-filter="caps"],    [data-line="caps"]    { --tone: var(--lk-green); --tone-on: var(--lk-ink); }
+
+.lk-filter { display: inline-flex; align-items: center; gap: 8px; }
+.lk-filter:not([data-filter="all"])::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tone); transition: background .2s; }
+.lk-filter:hover { border-color: var(--tone); }
+.lk-filter[aria-pressed="true"] { background: var(--tone); border-color: var(--tone); color: var(--tone-on); }
+.lk-filter[aria-pressed="true"]::before { background: var(--tone-on); }
+
+.lk-card-tag { display: inline-flex; align-items: center; gap: 6px; }
+.lk-card-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--tone); }
+.lk-card.is-flash .lk-card-media { outline-color: var(--tone); }
+.lk-pill[aria-pressed="true"] { border-color: var(--tone); background: var(--tone); color: var(--tone-on); }
+.lk-card .lk-btn.is-added { color: var(--ink); box-shadow: inset 0 0 0 1px var(--tone), inset 0 -3px 0 var(--tone); }
+
+/* Armour of God: feather gold */
+.lk-story .lk-kicker { color: var(--lk-gold-text); }
+.lk-verse { border-left-color: var(--lk-gold); }
+.lk-story .lk-btn { background: var(--lk-gold); color: var(--lk-ink); }
+.lk-story .lk-btn:hover { background: color-mix(in srgb, var(--lk-gold) 82%, #000); }
+.lk-story-art { background: color-mix(in srgb, var(--lk-gold) 14%, #fff); }
+
+/* Girls' Club: pink and green */
+.lk-club .lk-kicker { color: var(--lk-pink-text); }
+.lk-club .lk-btn { background: var(--lk-pink); color: var(--lk-ink); }
+.lk-club .lk-btn:hover { background: var(--lk-green); }
+.lk-club-fig img { background: color-mix(in srgb, var(--lk-pink) 14%, #fff); }
+.lk-club-fig:nth-child(odd) figcaption::before, .lk-club-fig:nth-child(even) figcaption::before {
+  content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 7px; border-radius: 50%; vertical-align: 1px;
+}
+.lk-club-fig:nth-child(1) figcaption::before, .lk-club-fig:nth-child(4) figcaption::before { background: var(--lk-green); }
+.lk-club-fig:nth-child(2) figcaption::before { background: var(--lk-pink); }
+.lk-club-fig:nth-child(3) figcaption::before { background: var(--lk-ink); }
+
+/* The Collection kicker in College red */
+.lk-shop .lk-kicker { color: var(--lk-red-text); }

@@ -46,66 +46,68 @@
   };
 
   // pin: [left %, top %] of the figure box, where the piece sits on the model.
+  // `tone` picks the UI colour for each look from the product palette in
+  // runway.css (red, flame, green, pink, gold, ink): the colour its pieces carry.
   const LOOKS = [
-    { name: 'Built for the Long Run', img: 'look-1', items: [
+    { name: 'Built for the Long Run', tone: 'red', img: 'look-1', items: [
       { id: 'college-tee-black', pin: [50, 26] },
       { id: 'lord-knows-joggers', pin: [57, 52] },
       { id: 'red-trucker' },
     ] },
-    { name: 'Everyday Uniform', img: 'look-2', items: [
+    { name: 'Everyday Uniform', tone: 'ink', img: 'look-2', items: [
       { id: 'college-tee-black', pin: [70, 31] },
       { id: 'lord-knows-joggers', pin: [72, 56] },
       { id: 'classic-trucker' },
     ] },
-    { name: 'Salvation', img: 'look-3', items: [
+    { name: 'Salvation', tone: 'red', img: 'look-3', items: [
       { id: 'college-tee-black', pin: [49, 30] },
       { id: 'salvation-joggers', pin: [51, 78] },
       { id: 'classic-trucker' },
     ] },
-    { name: 'Stadium Days', img: 'look-4', items: [
+    { name: 'Stadium Days', tone: 'red', img: 'look-4', items: [
       { id: 'college-tee-black', pin: [50, 30] },
       { id: 'lord-knows-joggers', pin: [52, 60] },
       { id: 'red-trucker' },
     ] },
-    { name: 'New Classics', img: 'look-5', items: [
+    { name: 'New Classics', tone: 'green', img: 'look-5', items: [
       { id: 'college-tee-white', pin: [44, 66] },
       { id: 'lord-knows-joggers', pin: [22, 87] },
       { id: 'club-trucker' },
     ] },
     // Looks 6-14 are AVIF cutouts. `rack: true` marks a garment display
     // (shirts floating, no model), drawn without the floor shadow.
-    { name: 'Girls’ Club', img: 'look-6', ext: 'avif', items: [
+    { name: 'Girls’ Club', tone: 'green', img: 'look-6', ext: 'avif', items: [
       { id: 'club-tee-green', pin: [50, 68] },
       { id: 'club-trucker', pin: [22, 21] },
     ] },
-    { name: 'Armour of God', img: 'look-7', ext: 'avif', rack: true, items: [
+    { name: 'Armour of God', tone: 'gold', img: 'look-7', ext: 'avif', rack: true, items: [
       { id: 'armour-shirt-black', pin: [38, 30] },
       { id: 'armour-shirt', pin: [60, 54] },
     ] },
-    { name: 'Pretty in Pink', img: 'look-8', ext: 'avif', items: [
+    { name: 'Pretty in Pink', tone: 'pink', img: 'look-8', ext: 'avif', items: [
       { id: 'club-tee-pink', pin: [57, 66] },
     ] },
-    { name: 'Fallen Angel', img: 'look-9', ext: 'avif', rack: true, items: [
+    { name: 'Fallen Angel', tone: 'flame', img: 'look-9', ext: 'avif', rack: true, items: [
       { id: 'fallen-shirt-black', pin: [40, 25] },
       { id: 'fallen-longsleeve', pin: [64, 48] },
       { id: 'fallen-tee', pin: [42, 73] },
     ] },
-    { name: 'Monochrome', img: 'look-10', ext: 'avif', items: [
+    { name: 'Monochrome', tone: 'ink', img: 'look-10', ext: 'avif', items: [
       { id: 'raglan-crop', pin: [53, 61] },
       { id: 'classic-trucker', pin: [47, 19] },
     ] },
-    { name: 'Heart of the Messiah', img: 'look-11', ext: 'avif', rack: true, items: [
+    { name: 'Heart of the Messiah', tone: 'red', img: 'look-11', ext: 'avif', rack: true, items: [
       { id: 'messiah-tee', pin: [50, 48] },
     ] },
-    { name: 'Front Row', img: 'look-12', ext: 'avif', items: [
+    { name: 'Front Row', tone: 'red', img: 'look-12', ext: 'avif', items: [
       { id: 'college-tee-white', pin: [47, 63] },
       { id: 'lord-knows-joggers', pin: [18, 84] },
     ] },
-    { name: 'Gothic', img: 'look-13', ext: 'avif', rack: true, items: [
+    { name: 'Gothic', tone: 'ink', img: 'look-13', ext: 'avif', rack: true, items: [
       { id: 'gothic-tee-black', pin: [43, 35] },
       { id: 'gothic-tee-white', pin: [57, 63] },
     ] },
-    { name: 'Sunday Best', img: 'look-14', ext: 'avif', rack: true, items: [
+    { name: 'Sunday Best', tone: 'gold', img: 'look-14', ext: 'avif', rack: true, items: [
       { id: 'feather-shirt-black', pin: [38, 28] },
       { id: 'signature-shirt', pin: [63, 48] },
       { id: 'feather-shirt-white', pin: [42, 72] },
@@ -657,6 +659,7 @@
       this.index = i;
       this.hydrate(i);
       const look = LOOKS[i];
+      this.dataset.tone = look.tone || 'ink';
       if (!silent) {
         this.closePopup();
         if (this.sheetCard) this.closePicker(this.sheetCard, false);

@@ -54,12 +54,43 @@ button:focus-visible, a:focus-visible { outline: 2px solid #151413; outline-offs
   display: flex; align-items: center; justify-content: center; gap: 5px;
   background: none; border: 0; min-width: 44px; min-height: 44px; cursor: pointer; padding: 0;
 }
-#open-bag [data-cart-count] { font-size: 10px; }
+#open-bag [data-cart-count] {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; display: grid; place-items: center;
+  background: var(--lk-red); color: #fff; font-size: 10px; font-weight: 600; line-height: 1;
+}
 
 /* Until runway.js defines the element it is empty; reserve its space so the
    sections below don't start inside the viewport and pull in their lazy
    images on first paint. */
 runway-section:not(:defined) { display: block; min-height: 400vh; }
+
+/* ---------- Product colours ----------
+   Sampled from the garments themselves: the College / Stadium red, the
+   Fallen Angel scarlet, Girls' Club green and pink, the feather & Armour
+   gold, and the ink and cream of the base tees. `-text` versions are
+   deepened so they read on white. */
+:root {
+  --lk-ink: #151413; --lk-cream: #f3eee2;
+  --lk-red: #aa201b;    --lk-red-text: #aa201b;
+  --lk-flame: #c2412d;  --lk-flame-text: #a8321f;
+  --lk-green: #08ba64;  --lk-green-text: #0a7d45;
+  --lk-pink: #d981a5;   --lk-pink-text: #a8466f;
+  --lk-gold: #d9a85b;   --lk-gold-text: #8a6022;
+}
+::selection { background: var(--lk-pink); color: var(--lk-ink); }
+
+/* Each look tints the runway UI with the colour its pieces carry.
+   Registered so the swap between looks fades instead of snapping. */
+@property --rw-accent { syntax: '<color>'; inherits: true; initial-value: #151413; }
+@property --rw-on-accent { syntax: '<color>'; inherits: true; initial-value: #ffffff; }
+@property --rw-accent-text { syntax: '<color>'; inherits: true; initial-value: #151413; }
+runway-section { transition: --rw-accent .9s var(--rw-ease-silk, ease), --rw-on-accent .9s, --rw-accent-text .9s; }
+runway-section[data-tone="ink"]   { --rw-accent: var(--lk-ink);   --rw-on-accent: #fff;           --rw-accent-text: var(--lk-ink); }
+runway-section[data-tone="red"]   { --rw-accent: var(--lk-red);   --rw-on-accent: #fff;           --rw-accent-text: var(--lk-red-text); }
+runway-section[data-tone="flame"] { --rw-accent: var(--lk-flame); --rw-on-accent: #fff;           --rw-accent-text: var(--lk-flame-text); }
+runway-section[data-tone="green"] { --rw-accent: var(--lk-green); --rw-on-accent: var(--lk-ink); --rw-accent-text: var(--lk-green-text); }
+runway-section[data-tone="pink"]  { --rw-accent: var(--lk-pink);  --rw-on-accent: var(--lk-ink); --rw-accent-text: var(--lk-pink-text); }
+runway-section[data-tone="gold"]  { --rw-accent: var(--lk-gold);  --rw-on-accent: var(--lk-ink); --rw-accent-text: var(--lk-gold-text); }
 
 /* ---------- Section tokens ---------- */
 runway-section {
@@ -123,6 +154,7 @@ runway-section {
   position: relative; flex: 1 1 auto; min-height: 0;
   touch-action: pan-y; user-select: none; -webkit-user-select: none;
   cursor: grab; outline: none; overflow: hidden; z-index: 0;
+  background: radial-gradient(60% 52% at 50% 58%, color-mix(in srgb, var(--rw-accent) 13%, #fff), #fff 100%);
 }
 runway-section.is-dragging .rw__stage { cursor: grabbing; }
 .rw__stage:focus-visible { box-shadow: inset 0 0 0 2px var(--rw-accent); }
@@ -182,7 +214,7 @@ runway-section.rw--still .rw__hero.is-on .rw__morph { opacity: 1; visibility: vi
 .rw__cursor.is-view .rw__cursor-view { opacity: 1; }
 .rw__cursor.is-link .rw__cursor-in { transform: scale(.2); background: var(--rw-accent); border-color: transparent; }
 .rw__cursor.is-link .rw__cursor-label { opacity: 0; }
-runway-section.is-dragging .rw__cursor .rw__cursor-in { transform: scale(.74); background: var(--rw-accent); border-color: var(--rw-accent); color: #fff; }
+runway-section.is-dragging .rw__cursor .rw__cursor-in { transform: scale(.74); background: var(--rw-accent); border-color: var(--rw-accent); color: var(--rw-on-accent); }
 runway-section.is-dragging .rw__cursor .rw__cursor-drag { opacity: 1; letter-spacing: .42em; }
 runway-section.is-dragging .rw__cursor .rw__cursor-view { opacity: 0; }
 
@@ -209,7 +241,7 @@ runway-section.is-playing .rw__auto .rw__i-play { display: none; }
   color: var(--rw-muted); text-align: left; background: none; border: 0; padding: 0; cursor: pointer;
   transition: flex-basis .8s cubic-bezier(.2,1.25,.3,1), color .3s;
 }
-.rw__tick[aria-current="true"] { flex: 0 1 190px; min-width: 110px; color: #151413; }
+.rw__tick[aria-current="true"] { flex: 0 1 190px; min-width: 110px; color: var(--rw-accent-text); }
 .rw__tick:hover { color: #151413; }
 .rw__tick:focus-visible { outline: 2px solid var(--rw-accent); outline-offset: 2px; }
 .rw__tick-bar { display: block; position: relative; width: 100%; height: 2px; overflow: hidden; background: color-mix(in srgb, #151413 14%, transparent); transition: transform .5s var(--rw-ease); }
@@ -263,12 +295,12 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
   display: grid; place-items: center; background: rgb(255 255 255/.9); color: #151413; font-size: 10px; font-weight: 600;
   transition: background .3s, color .3s, transform .45s cubic-bezier(.2,1.6,.4,1);
 }
-.rw__item.is-hot .rw__num { background: var(--rw-accent); color: #fff; transform: scale(1.12); }
-@media (hover: hover) { .rw__item:hover .rw__num { background: var(--rw-accent); color: #fff; transform: scale(1.12); } }
+.rw__item.is-hot .rw__num { background: var(--rw-accent); color: var(--rw-on-accent); transform: scale(1.12); }
+@media (hover: hover) { .rw__item:hover .rw__num { background: var(--rw-accent); color: var(--rw-on-accent); transform: scale(1.12); } }
 
 .rw__tag { position: absolute; top: calc(var(--rw-tag-top) - 7px); left: calc(var(--rw-tag-left) + 8px); z-index: 2; display: flex; flex-direction: column; transform-origin: 10px 0; pointer-events: none; }
 .rw__tag::before { content: ""; width: 1px; height: 11px; margin-left: 10px; background: color-mix(in srgb, #151413 50%, transparent); }
-.rw__tag-text { background: #151413; color: var(--rw-panel); font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 4px 6px; border-radius: 2px; }
+.rw__tag-text { background: var(--rw-accent); color: var(--rw-on-accent); transition: background .9s, color .9s; font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 4px 6px; border-radius: 2px; }
 @media (hover: hover) { .rw__item:hover .rw__tag { animation: rw-swing 1.4s cubic-bezier(.3,.7,.4,1); } }
 @keyframes rw-swing { 0% { transform: rotate(-16deg); } 25% { transform: rotate(11deg); } 45% { transform: rotate(-7deg); } 65% { transform: rotate(4deg); } 82% { transform: rotate(-2deg); } 100% { transform: rotate(0); } }
 
@@ -284,7 +316,8 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
 
 /* Plus button */
 .rw__add { position: relative; width: 44px; height: 44px; display: grid; border: 0; background: none; padding: 0; align-self: end; cursor: pointer; place-items: center; }
-.rw__add svg { grid-area: 1/1; position: relative; fill: none; stroke: #fff; transition: transform .55s cubic-bezier(.2,1.6,.4,1), opacity .2s; }
+.rw__add { color: var(--rw-accent); }
+.rw__add svg { grid-area: 1/1; position: relative; fill: none; stroke: var(--rw-on-accent); transition: transform .55s cubic-bezier(.2,1.6,.4,1), opacity .2s; }
 .rw__add .rw__i-check, .rw__add .rw__i-spin { opacity: 0; }
 /* solid disc behind the white plus / check */
 .rw__add::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: currentColor; transition: transform .5s cubic-bezier(.2,1.6,.4,1), background .3s; }
@@ -349,7 +382,7 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
 /* Bundle footer */
 .rw__bundle { padding: 20px 32px 30px; display: flex; flex-direction: column; gap: 16px; background: var(--rw-panel); }
 .rw__bundle.has-rule { border-top: 1px solid var(--rw-line); }
-.rw__msg { margin: 0; font-size: 11px; line-height: 1.45; color: var(--rw-accent); }
+.rw__msg { margin: 0; font-size: 11px; line-height: 1.45; color: var(--rw-accent-text); }
 .rw__msg:empty { display: none; }
 .rw__msg:not(:empty) { animation: rw-rise .6s var(--rw-ease); }
 .rw__bundle-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
@@ -362,12 +395,12 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
 
 .rw__cta {
   position: relative; overflow: hidden; min-height: 56px; width: 100%; border: 0; border-radius: var(--rw-btn-radius);
-  background: var(--rw-btn-bg); color: var(--rw-btn-fg);
+  background: var(--rw-accent); color: var(--rw-on-accent);
   font-size: 13px; font-weight: 500; letter-spacing: .02em;
   display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer;
   transition: transform .6s var(--rw-ease), background .45s, color .45s, box-shadow .6s var(--rw-ease);
 }
-.rw__cta:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -22px color-mix(in srgb, #151413 80%, transparent); }
+.rw__cta:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -18px color-mix(in srgb, var(--rw-accent) 90%, #000); }
 .rw__cta:hover .rw__cta-arrow { transform: translateX(4px); }
 .rw__cta:active { transform: scale(.985); }
 .rw__cta-arrow { fill: currentColor; transition: transform .5s cubic-bezier(.2,1.6,.4,1); }
@@ -376,7 +409,7 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
 .rw__cta.is-loading .rw__cta-spin { display: block; animation: rw-spin .8s linear infinite; }
 .rw__cta:disabled { opacity: .5; }
 .rw__cta-m, .rw__cta-done { display: none; }
-.rw__look-panel.is-complete .rw__cta { background: var(--rw-accent); color: #fff; animation: rw-glow 1.8s var(--rw-ease); cursor: default; }
+.rw__look-panel.is-complete .rw__cta { background: var(--rw-accent); color: var(--rw-on-accent); animation: rw-glow 1.8s var(--rw-ease); cursor: default; }
 .rw__look-panel.is-complete .rw__cta-add, .rw__look-panel.is-complete .rw__cta-m, .rw__look-panel.is-complete .rw__cta-arrow { display: none; }
 .rw__look-panel.is-complete .rw__cta-done { display: inline; animation: rw-rise .7s var(--rw-ease); }
 @keyframes rw-glow { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--rw-accent) 55%, transparent); } to { box-shadow: 0 0 0 16px color-mix(in srgb, var(--rw-accent) 0%, transparent); } }
@@ -418,11 +451,11 @@ runway-section.is-playing .rw__tick.is-run .rw__tick-bar::after { animation: rw-
 .rw__pin-dot::before { border-color: rgb(255 255 255/.55); animation-delay: 1.3s; }
 @keyframes rw-ring { from { transform: scale(.8); opacity: .9; } to { transform: scale(1.7); opacity: 0; } }
 .rw__pin:hover .rw__pin-dot, .rw__pin.is-hot .rw__pin-dot {
-  transform: scale(1.3); background: #0e0e0e; color: #fff;
-  box-shadow: 0 0 0 6px color-mix(in srgb, #0e0e0e 22%, transparent), 0 8px 20px -6px rgb(0 0 0/.45);
+  transform: scale(1.3); background: var(--rw-accent); color: var(--rw-on-accent);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--rw-accent) 30%, transparent), 0 8px 20px -6px rgb(0 0 0/.45);
 }
 .rw__pin:focus-visible { outline: none; }
-.rw__pin:focus-visible .rw__pin-dot { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0e0e0e; }
+.rw__pin:focus-visible .rw__pin-dot { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--rw-accent-text); }
 .rw__pin::after {
   content: attr(data-tip); position: absolute; left: calc(100% - 6px); top: 50%;
   max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
